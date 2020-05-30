@@ -9,18 +9,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">主頁</a>
+                    <a class="nav-link" href="home.php">主頁</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#list">店家一覽</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="">留言</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">回報問題</a>
-                </li>
-
             </ul>
             <ul class="navbar-nav justify-content-right">
                 <?php
@@ -28,9 +18,7 @@
                         echo '<li class="nav-item">
                         <img style="height: 40px; width: 40px; border-radius: 50%;"/>
                         <span style="margin-left: 10px; ">Username</span>
-                        </li><li class="nav-item">
-                        <a class="nav-link" href="logout.php">登出</a>
-                        </li>';
+                    </li>';
                     }else{
                         echo '<li class="nav-item">
                         <a class="nav-link" href="login.php">登入</a>

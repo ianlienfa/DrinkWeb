@@ -11,7 +11,11 @@ class DBController {
 	function connectDB() {
 		$conn = mysqli_connect($this->host,$this->user,$this->password,$this->database);
 		return $conn;
-	}
+    }
+    
+    function unconnectDB(){
+        $this->conn->close();  
+    }
 }
 
 function searchBrand($conn, $search_str)
@@ -74,4 +78,24 @@ function getBrandPics($conn)
     /* free result set */
     $result->close();
 }
+
+function login($conn,$account, $password){
+    $query = "SELECT UserID from USER where Account='$account' AND Passwd='$password'";
+    $result = $conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }  
+    if ($result->num_rows) {
+        /* fetch object array */
+        $row = $result->fetch_row();
+            return $row[0];
+    }
+    else{
+        return 0;
+    }
+    /* free result set */
+    $result->close();
+
+}
+
 ?>

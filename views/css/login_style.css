@@ -1,0 +1,29 @@
+.login_input {
+    background-color: transparent;
+    border-style: solid;
+    border-radius: 50px;
+    font-family: 'Noto Sans TC', sans-serif;
+    border-width: 1px;
+    border-color: black;
+    outline: none;
+    text-align: center;
+    font-size: 15px;
+    padding: 5px 20px;
+}
+
+.inputdiv {
+    margin-top: 20px;
+}
+
+#loginbtn {
+    background-color: black;
+    border-style: solid;
+    border-radius: 50px;
+    font-family: 'Noto Sans TC', sans-serif;
+    border-width: 1px;
+    border-color: black;
+    outline: none;
+    text-align: center;
+    color: white;
+    padding: 5px 10px;
+}
