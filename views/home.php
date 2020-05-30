@@ -53,7 +53,7 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
                 <div class="row" style="margin-bottom: 50px;">
                     <div class="col-md-12 text-center" style="text-align:center;">
                         <form method="post" action='home.php' style="margin: auto; text-align:center;" id="searchform">
-                            <input type="text" placeholder="Search Brand" id="forminput" name="search" autocomplete="off">
+                            <input type="text" placeholder="Search" id="forminput" name="search" autocomplete="off">
                             <button class="btn my-2 my-sm-0" type="submit" name="search_btn" id="searchbtn"><img src="picture/Search.png" style="box-shadow: transparent 0px 0px 0px 0px; height: 20px;width: 20px;"/></button>
                         </form>
                     </div>
