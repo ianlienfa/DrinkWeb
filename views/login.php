@@ -9,7 +9,7 @@ if (isset($_POST['loginbtn'])&&isset($_POST['account'])&&isset($_POST['passwd'])
     $userid=login($conn,$_POST['account'],$_POST['passwd']);
     if ($userid!=0)
     {
-        setcookie('login',$userid);
+        setcookie('login',$userid,time()+3600);
         setcookie('LAST_ACTIVITY',time(),time()+3600);
         header("Location: ./home.php"); //將網址改為登入成功後要導向的頁面
     }else{

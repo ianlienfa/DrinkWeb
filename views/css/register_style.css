@@ -1,0 +1,26 @@
+#image {
+    position: relative;
+    outline-color: transparent;
+    background-color: black;
+    border: none;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    width: 130px;
+    color: white;
+    padding: 5px 10px;
+    font-family: 'Noto Sans TC', sans-serif;
+    display: inline-block;
+}
+
+#r_img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+    height: 30px;
+    width: 100px;
+    padding: 5px 10px;
+}

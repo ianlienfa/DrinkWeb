@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">主頁</a>
+                    <a class="nav-link" href="home.php">主頁</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#list">店家一覽</a>
@@ -25,18 +25,25 @@
             <ul class="navbar-nav justify-content-right">
                 <?php
                     if (isset($_COOKIE['login'])){
+                        $db= new DBController();
+                        $conn=$db->connectDB();
+                        $row=getUser($conn, $_COOKIE['login']);
                         echo '<li class="nav-item">
-                        <img style="height: 40px; width: 40px; border-radius: 50%;"/>
-                        <span style="margin-left: 10px; ">Username</span>
+                        <div class="crop" style="width: auto;height: auto;overflow: hidden;"><img id="userimg" style="height: 40px; width: 40px;     object-fit: cover;
+                        object-position: center;border-radius: 50%;" src="data:'.$row[1].';base64,'.base64_encode($row[0]).'"/><span style="margin-left: 10px; line-height: 40px;">'.$row[2].'</span></div>
+                        </li><li class="nav-item">
+                        <a class="nav-link" href="reset_passwd.php">修改密碼</a>
                         </li><li class="nav-item">
                         <a class="nav-link" href="logout.php">登出</a>
                         </li>';
+                        $conn->close();
+                        unset($db);
                     }else{
                         echo '<li class="nav-item">
                         <a class="nav-link" href="login.php">登入</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">註冊</a>
+                        <a class="nav-link" href="register.php">註冊</a>
                     </li>';
                     }
                 ?>
