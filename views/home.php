@@ -27,11 +27,45 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!--標籤名字-->
         <title>珍吸生命，人人有擇</title>
-        <link rel="stylesheet" href="css/login_style.css">
+        <script>
+        $(function() {
+            $('a[href*="#"]:not([href="#"])').click(function() {
+                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+                    var target = $(this.hash);
+                    //target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    target = $('[name=' + this.hash.slice(1) + ']');
+                    if (target.length) {
+                        $('html, body').animate({
+                            scrollTop: target.offset().top
+                        }, 1000);
+                        return false;
+                    }
+                }
+
+            });
+        });
+
+        $(function() {
+            //control display of goTop button and motion
+            $("#gotop").click(function() {
+                jQuery("html,body").animate({
+                    scrollTop: 0
+                }, 1000);
+            });
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 150) {
+                    $('#gotop').fadeIn("fast");
+                } else {
+                    $('#gotop').stop().fadeOut("fast");
+                }
+            });
+        });
+        </script>
+        
     </head>
     <body>   
         <!--大塊說明列-->
-        <section id='intro'>
+        <section id='intro' name='intro'>
             <div class='jumbotron'>
                 <div class='container'>
                     <div class="col-md-12">
@@ -43,7 +77,7 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
             </div>
         </section>
         <!--內文介紹-->
-        <section id='list' style="padding-top: 50px;">
+        <section id='list' name='list' style="padding-top: 50px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
@@ -63,5 +97,6 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
             ?>
             </div>
         </section>
+        <button id="gotop"></button>
     </body>
 </html>

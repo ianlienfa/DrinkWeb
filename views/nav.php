@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="home.php">主頁</a>
+                    <a class="nav-link" href="#intro">主頁</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#list">店家一覽</a>
