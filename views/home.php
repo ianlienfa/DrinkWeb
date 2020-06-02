@@ -60,6 +60,10 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
                 }
             });
         });
+
+        function setBrand($id){
+            document.cookie="BrandID="+$id;
+        }
         </script>
         
     </head>

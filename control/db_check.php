@@ -40,7 +40,7 @@ function searchBrand($conn, $search_str)
 
 function getBrandPics($conn)
 {
-    $query = "SELECT Brandname, Logoimg, Logomime from BRAND";
+    $query = "SELECT Brandname, Logoimg, Logomime,BrandID from BRAND";
     // count the numbers of the return rows and decide the pattern
     $result = $conn->query($query);
     if ($result === false){
@@ -60,7 +60,7 @@ function getBrandPics($conn)
                 <div class="col-md-3">
                 <div class="outer">
                     <div class="upper">
-                        <a href="brand.php">';
+                        <a href="brand.php" onclick="setBrand('.$row[3].');">';
                             echo '<img src="data:'.$row[2].';base64,'.base64_encode($row[1]).'"/>';                            
                             echo '
                         </a>
