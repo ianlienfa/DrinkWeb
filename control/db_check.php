@@ -215,7 +215,9 @@ function getBrandInfo($conn, $brandid){
         $row=$result->fetch_row();
         echo '<div class="left col-md-3 text-center">
         <img src="data:'.$row[3].';base64,'.base64_encode($row[2]).'" alt="" style="height: 200px; width: 200px; border-radius: 50%;">
-        <h1 style="font-size: 50px;"><strong>'.$row[1].'</strong></h1>
+        <br><span style="font-size: 50px;"><strong>'.$row[1].'</strong></span><button id="menubtn" onclick="menubtn();"></button>
+        </div><div class="card" id="menuimg" style="z-index: 1;width: fit-content; height: fit-content; display:none; position: absolute; left: 50%; top: 50%; margin-left: -400px; margin-top: -200px;  background-color: transparent; border:none;">
+        <img src="data:'.$row[5].';base64,'.base64_encode($row[4]).'" style="height: auto; width: 700px;"><button id="close" onclick="closebtn()"></button>
         </div>';
     }
     $result->close();
@@ -233,7 +235,7 @@ function getBrandInfo($conn, $brandid){
         }</style>';
         echo '<div class="right col-md-6 offset-md-3">
         <li>
-            <h4><i class="fas fa-check-circle"></i>'.$row[0].'</h4><span class="bar"><span class="whole" style="width:'.$rate.'%;animation: whole 2s;"></span></span>
+            <h4><i class="fas fa-check-circle"> 評價</i>'.$row[0].'</h4><span class="bar"><span class="whole" style="width:'.$rate.'%;animation: whole 2s;"></span></span>
         </li>
         </div>';
     }
@@ -249,12 +251,18 @@ function getBrandComment($conn, $BrandID)
         echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
     }
     
+    echo "<br><br>";
+
     /* fetch object array */
     while ($row = $result->fetch_row()) {
-        echo '<p>'.$row[0].' :   '.$row[1].'   -------------------於'.$row[2].'</p>';
+        echo '<div class = "row offset-3">
+            <p>'.$row[0].' :   '.$row[1].'   -------------------於'.$row[2].'</p>
+            </div>
+            ';
     }
     /* free result set */
     $result->close();
 }
+
 
 ?>

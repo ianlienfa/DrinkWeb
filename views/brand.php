@@ -14,22 +14,34 @@ require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/store.css">
-    <title>日出茶太 | 珍吸生命</title>
+    <title>珍吸生命，人人有擇</title>
     <script src="https://kit.fontawesome.com/e40da61bd8.js" crossorigin="anonymous"></script>
+
+<script>
+    function menubtn() {
+        var menuBtn = document.getElementById('menubtn');
+        var menuimg = document.getElementById('menuimg');
+        if (menuimg.style.display === 'none') {
+            $('#menuimg').fadeIn();
+            menuimg.style.display = 'inline-block';
+        }
+    }
+    function closebtn() {
+        var closeBtn = document.getElementById('close');
+        var menuimg = document.getElementById('menuimg');
+        $('#menuimg').fadeOut();
+    }
+</script>
 
 </head>
   <body>
     <section id='info'>
-        <div class='jumbotron'>
-            <div class='container'>
-                <div class="row">
+        <div class='jumbotron' style = 'background-image:url("picture/d.jpeg"); background-size: cover; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;'>
                     <?php 
                         $db = new DBController();
                         $conn = $db->connectDB();
                         getBrandInfo($conn,$_COOKIE['BrandID']);
                     ?>
-                </div>
-            </div>
         </div>
     </section>
 

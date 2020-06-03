@@ -1,129 +1,196 @@
-h1,h2,h3,h4,h5,h6{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Noto Sans TC', sans-serif;
 }
 
-p,a,input,label,textarea,span,ul,li{
+p,
+a,
+input,
+label,
+textarea,
+span,
+ul,
+li {
     font-family: 'Noto Sans TC', sans-serif;
 }
 
-.btn{
+.btn {
     background-color: deepskyblue;
     color: white;
     padding: 10px 25px;
     border-radius: 20px;
 }
 
-img{
+img {
     max-width: 100%;
 }
 
-header nav img{
+header nav img {
     width: 40px;
     height: 40px;
 }
 
-header li{
+header li {
     margin: 0 18px;
 }
 
-
-
-#info img{
-    margin-bottom:20px;
+#info img {
+    margin-bottom: 20px;
 }
 
-#info h1{
+#info h1 {
     font-size: 55px;
     font-weight: 600;
     line-height: 1.5;
 }
 
-.left{
+.left {
     margin: 90px auto;
 }
 
-.right{
+.right {
     list-style: none;
-    width:500px;
-    margin:60px auto;
+    width: 500px;
+    margin: 60px auto;
 }
 
-.right li{
+.right li {
     margin: 30px 0;
 }
 
-.right i{
-    margin:0 20px 0 0;
+.right i {
+    margin: 0 20px 0 0;
 }
 
-.topic{
+.topic {
     font-size: 40px;
     font-weight: bold;
 }
 
-.bar{
+.bar {
     background: white;
-    display:block;
-    height:10px;
+    display: block;
+    height: 10px;
     border: 2px solid deepskyblue;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 5px 5px 5px lightgray;
 }
 
-.bar span{
+.bar span {
     height: 10px;
     float: left;
     background: deepskyblue;
 }
 
-.drink{
-    width:90%;
+.drink {
+    width: 90%;
     animation: drink 2s;
 }
 
 @keyframes drink {
-    0% {width:0%; }
-    100% {width:90%; }
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 90%;
+    }
 }
 
-.topping{
-    width:75%;
+.topping {
+    width: 75%;
     animation: topping 2s;
 }
 
 @keyframes topping {
-    0% {width:0%; }
-    100% {width:75%; }
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 75%;
+    }
 }
 
-.sweet{
-    width:60%;
+.sweet {
+    width: 60%;
     animation: sweet 2s;
 }
 
 @keyframes sweet {
-    0% {width:0%; }
-    100% {width:60%; }
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 60%;
+    }
 }
 
-.serve{
-    width:86%;
+.serve {
+    width: 86%;
     animation: serve 2s;
 }
 
 @keyframes serve {
-    0% {width:0%; }
-    100% {width:86%; }
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 86%;
+    }
 }
 
-.whole{
-    width:78%;
+.whole {
+    width: 78%;
     animation: whole 2s;
 }
 
 @keyframes whole {
-    0% {width:0%; }
-    100% {width:78%; }
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 78%;
+    }
 }
 
+#menubtn {
+    border: none;
+    /* Remove borders */
+    outline: none;
+    /* Remove outline */
+    background-color: transparent;
+    background-image: url("menu.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+    margin-left: 10px;
+}
+
+#menubtn:hover {
+    background-image: url("menu2.png");
+}
+
+#close {
+    border: none;
+    /* Remove borders */
+    outline: none;
+    /* Remove outline */
+    background-color: transparent;
+    background-image: url("close.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+    vertical-align: top;
+    margin-top: -15px;
+    margin-left: -15px;
+}
+
+#close:hover {
+    background-image: url("close2.png");
+}
