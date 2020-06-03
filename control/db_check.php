@@ -113,6 +113,7 @@ function checkUser($conn,$account,$password,$username)
             }
         }
     }
+    $result->close();
     return 1;
 }
 
@@ -154,6 +155,7 @@ function getUser($conn,$userid){
     if ($result->num_rows){
         return $result->fetch_row();
     }
+    $result->close();
     return 0;
 }
 
@@ -200,5 +202,59 @@ function resetpasswd($conn,$userid,$oldpassword, $newpassword, $checknewpassword
             </script>";
         }
     }
+    $result->close();
 }
+
+function getBrandInfo($conn, $brandid){
+    $query="SELECT * from BRAND where BrandID='$brandid'";
+    $result=$conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    if ($result->num_rows){
+        $row=$result->fetch_row();
+        echo '<div class="left col-md-3 text-center">
+        <img src="data:'.$row[3].';base64,'.base64_encode($row[2]).'" alt="" style="height: 200px; width: 200px; border-radius: 50%;">
+        <h1 style="font-size: 50px;"><strong>'.$row[1].'</strong></h1>
+        </div>';
+    }
+    $result->close();
+    $query="SELECT ROUND(AVG(Rate),1) from STORE where BrandID=$brandid";
+    $result=$conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    if ($result->num_rows){
+        $row=$result->fetch_row();
+        $rate=(int)$row[0]*10;
+        echo '<style>@keyframes whole {
+            0% {width:0%; }
+            100% {width:'.$rate.'%; }
+        }</style>';
+        echo '<div class="right col-md-6 offset-md-3">
+        <li>
+            <h4><i class="fas fa-check-circle"></i>'.$row[0].'</h4><span class="bar"><span class="whole" style="width:'.$rate.'%;animation: whole 2s;"></span></span>
+        </li>
+        </div>';
+    }
+    $result->close();
+}
+
+function getBrandComment($conn, $BrandID)
+{
+    $query = "select Username, StoreText, Storename from COMMENT C, STORE S, USER U where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and C.BrandID = ".$BrandID;
+    // count the numbers of the return rows and decide the pattern
+    $result = $conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    
+    /* fetch object array */
+    while ($row = $result->fetch_row()) {
+        echo '<p>'.$row[0].' :   '.$row[1].'   -------------------於'.$row[2].'</p>';
+    }
+    /* free result set */
+    $result->close();
+}
+
 ?>
