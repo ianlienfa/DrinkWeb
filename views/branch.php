@@ -19,6 +19,14 @@ require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
     <script src="https://kit.fontawesome.com/e40da61bd8.js" crossorigin="anonymous"></script>
 
 </head>
+<script>
+    function sendToggle2()
+    {
+        document.getElementById("formcheckbox").submit();
+
+    }
+</script>
+
 <body>
     <div id='info'>
         <div class='jumbotron' style = 'height: 100%; background-color: RGB(238,238,238)'>
@@ -32,20 +40,25 @@ require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
 
 <div id='info'>
         <div class='container'>
+            <form method="get" action='./branch.php' id="formcheckbox" enctype="multipart/form-data">
                 <div class="onoffswitch2">
-                    <input type="checkbox" name="myonoffswitch2" class="onoffswitch2-checkbox" id="myonoffswitch2" tabindex="0" checked>
-                    <label class="onoffswitch2-label" for="myonoffswitch2">
-                        <span class="onoffswitch2-inner"></span>
-                        <span class="onoffswitch2-switch"></span>
-                    </label>
+                        <input type="checkbox" name="myonoffswitch2" class="onoffswitch2-checkbox" id="myonoffswitch2" tabindex="0" onchange="sendToggle2()" <?php
+                        if (isset($_GET["myonoffswitch2"])&&$_GET["myonoffswitch2"]==="on"){
+                            echo "checked";
+                        }?>
+                        ><label class="onoffswitch2-label" for="myonoffswitch2">
+                            <span class="onoffswitch2-inner"></span>
+                            <span class="onoffswitch2-switch"></span>
+                        </label>
                 </div>
+            </form> 
                 <?php
-                        if (empty($_POST["myonoffswitch2"]) ) {
+                        if (isset($_GET['myonoffswitch2'])&& $_GET['myonoffswitch2'] === "on") {
                             getStoreComment($conn,$_COOKIE['BrandID'],$_COOKIE['StoreID']);
                         }else{
                             getStoreDrinkComment($conn,$_COOKIE['BrandID'],$_COOKIE['StoreID']);
                         }
-                ?>  
+                ?> 
         </div>    
 </div>
 </body>
