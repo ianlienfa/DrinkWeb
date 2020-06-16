@@ -1,4 +1,3 @@
-
 <div class='container'>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: white;">
         <a class="navbar-brand" href="#">
@@ -16,12 +15,8 @@
                     <a class="nav-link" href="#list">店家一覽</a>
                 </li>
                 <li class="nav-item">
-                    <a href="comment.php" class="nav-link" style="cursor: pointer;">留言</a>
+                    <a class="nav-link" style="cursor: pointer;" href="comment.php">留言</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">回報問題</a>
-                </li>
-
             </ul>
             <ul class="navbar-nav justify-content-right">
                 <?php
@@ -30,8 +25,15 @@
                         $conn=$db->connectDB();
                         $row=getUser($conn, $_COOKIE['login']);
                         echo '<li class="nav-item">
-                        <div class="crop" style="width: auto;height: auto;overflow: hidden;"><img id="userimg" style="height: 40px; width: 40px;     object-fit: cover;
-                        object-position: center;border-radius: 50%;" src="data:'.$row[1].';base64,'.base64_encode($row[0]).'"/><span style="margin-left: 10px; line-height: 40px;">'.$row[2].'</span></div>
+                        <div class="crop" style="width: auto;height: auto;overflow: hidden;">';
+                        if ($row[1]!=null&&$row[2]!=null){
+                            echo '<img id="userimg" style="height: 40px; width: 40px;     object-fit: cover;
+                            object-position: center;border-radius: 50%;" src="data:'.$row[1].';base64,'.base64_encode($row[0]).'"/>';
+                        }else{
+                            echo '<img id="userimg" style="height: 40px; width: 40px;     object-fit: cover;
+                            object-position: center;border-radius: 50%;" src="picture/profile.png"/>';
+                        }
+                        echo '<span style="margin-left: 10px; line-height: 40px;">'.$row[2].'</span></div>
                         </li><li class="nav-item">
                         <a class="nav-link" href="reset_passwd.php">修改密碼</a>
                         </li><li class="nav-item">

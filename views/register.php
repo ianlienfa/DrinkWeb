@@ -6,13 +6,19 @@ if (isset($_POST['registerbtn'])&&isset($_POST['r_account'])&&isset($_POST['r_pa
 {
     $db = new DBController();
     $conn = $db->connectDB();
+    $imgData=null;
+    $imageProperties=null;
+
     if (count($_FILES)){
         if (is_uploaded_file($_FILES['r_img']['tmp_name'])) {
             $imgData = addslashes(file_get_contents($_FILES['r_img']['tmp_name']));
             $imageProperties = getimageSize($_FILES['r_img']['tmp_name']);
         }
+        register($conn,$_POST['r_account'],$_POST['r_passwd'],$_POST['r_checkpasswd'],$_POST['r_username'],$imgData,$imageProperties['mime']);
+    }else{
+        register($conn,$_POST['r_account'],$_POST['r_passwd'],$_POST['r_checkpasswd'],$_POST['r_username'],null,null);     
     }
-    register($conn,$_POST['r_account'],$_POST['r_passwd'],$_POST['r_checkpasswd'],$_POST['r_username'],$imgData,$imageProperties['mime']);
+
     $db->unconnectDB();
     unset($db);
 }

@@ -33,6 +33,27 @@ require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
         $('#menuimg').fadeOut();
     }
 
+    function setStore($id){
+        document.cookie="StoreID="+$id;
+    }
+
+    function sendToggle1()
+    {
+        //let params=(new URL(document.location)).searchParams;
+        //let name=params.get('myonoffswitch');
+        //document.cookie="switch="+name;
+        document.getElementById("formcheckbox").submit(); 
+    }
+
+    function sendToggle2()
+    {
+        //let params=(new URL(document.location)).searchParams;
+        //let name=params.get('myonoffswitch2');
+        //document.cookie="switch2="+name;
+        document.getElementById("formcheckbox").submit();
+
+    }
+
 </script>
 
 </head>
@@ -44,36 +65,51 @@ require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
                         $conn = $db->connectDB();
                         getBrandInfo($conn,$_COOKIE['BrandID']);
                     ?>
-                <form method="post" action='brand.php' id="formcheckbox" enctype="multipart/form-data">
-                    <div class="onoffswitch">
-                        <input type="checkbox" name="myonoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onchange="switchchange()" tabindex="0" checked>
-                        <label class="onoffswitch-label" for="myonoffswitch">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                        </label>
-                    </div>
-                </form>
+                
         </div>
     </div>
 
 <div id='info'>
         <div class='container'>
-                <div class="onoffswitch2">
-                    <input type="checkbox" name="myonoffswitch2" class="onoffswitch2-checkbox" id="myonoffswitch2" tabindex="0" checked>
-                    <label class="onoffswitch2-label" for="myonoffswitch2">
-                        <span class="onoffswitch2-inner"></span>
-                        <span class="onoffswitch2-switch"></span>
-                    </label>
-                </div>
+            <form method="get" action='./brand.php' id="formcheckbox" enctype="multipart/form-data">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="myonoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onchange="sendToggle1()" tabindex="0" <?php if (isset($_GET['myonoffswitch'])&&$_GET['myonoffswitch']==='on'){echo "checked";}?>>
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                <?php 
+                if (isset($_GET['myonoffswitch']) && $_GET['myonoffswitch'] === "on"){
+                    echo '<div class="onoffswitch2">
+                        <input type="checkbox" name="myonoffswitch2" class="onoffswitch2-checkbox" id="myonoffswitch2" tabindex="0" onchange="sendToggle2()"';
+                        if (isset($_GET["myonoffswitch2"])&&$_GET["myonoffswitch2"]==="on"){
+                            echo "checked";
+                        }
+                        echo '><label class="onoffswitch2-label" for="myonoffswitch2">
+                            <span class="onoffswitch2-inner"></span>
+                            <span class="onoffswitch2-switch"></span>
+                        </label>
+                    </div>';
+                }
+                ?>
+            </form>
                 <?php
-                    if (empty($_POST["myonoffswitch"]) ) {
-                        getBrandComment($conn,$_COOKIE['BrandID']);
+                    if (isset($_GET['myonoffswitch']) && $_GET['myonoffswitch'] === "on"){
+                        if (isset($_GET['myonoffswitch2'])&& $_GET['myonoffswitch2'] === "on") {
+                            getBrandComment($conn,$_COOKIE['BrandID']);
+                        }else{
+                            getDrinkComment($conn,$_COOKIE['BrandID']);
+                        }
                     }else{
+                        getStorelist($conn,$_COOKIE['BrandID']);
                     }
-                    $db->unconnectDB();
-                    unset($db);
                 ?>  
         </div>    
 </div>
 </body>
+<?php 
+    $db->unconnectDB();
+    unset($db);
+?>
 </html>

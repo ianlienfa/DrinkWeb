@@ -55,15 +55,16 @@ header li {
 .right {
     list-style: none;
     width: 500px;
-    margin: 30px auto;
+    margin: 60px auto;
+    height: 50px;
 }
 
 .right li {
-    margin: 20px 0;
+    margin: 30px 0;
 }
 
 .right i {
-    margin: 0 10px 0 0;
+    margin: 0 20px 0 0;
 }
 
 .topic {
@@ -155,44 +156,6 @@ header li {
     100% {
         width: 78%;
     }
-}
-
-#menubtn {
-    border: none;
-    /* Remove borders */
-    outline: none;
-    /* Remove outline */
-    background-color: transparent;
-    background-image: url("menu.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 30px;
-    width: 30px;
-    margin-left: 10px;
-}
-
-#menubtn:hover {
-    background-image: url("menu2.png");
-}
-
-#close {
-    border: none;
-    /* Remove borders */
-    outline: none;
-    /* Remove outline */
-    background-color: transparent;
-    background-image: url("close2.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 30px;
-    width: 30px;
-    vertical-align: top;
-    margin-top: -15px;
-    margin-left: -15px;
-}
-
-#close:hover {
-    background-image: url("close.png");
 }
 
 #user {
@@ -458,10 +421,12 @@ p {
     margin: auto;
     display: flex;
     align-items: center;
+    justify-content: start;
+    margin-left: 80px;
 }
 
 .wrap p {
-    padding-left: 5px;
+    padding-left: 10px;
 }
 
 .wrap img {

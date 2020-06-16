@@ -221,25 +221,19 @@ function getBrandInfo($conn, $brandid){
         </div>';
     }
     $result->close();
-    $query="SELECT ROUND(AVG(WholeRate),1) from STORE where BrandID=$brandid";
-    $result=$conn->query($query);
-    if ($result === false){
-        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
-    }
-    if ($result->num_rows){
-        $row=$result->fetch_row();
-        $rate=(int)$row[0]*10*2;
-        echo '<style>@keyframes whole {
-            0% {width:0%; }
-            100% {width:'.$rate.'%; }
-        }</style>';
-        echo '<div class="right col-md-6 offset-md-3">
-        <li>
-            <h4><i class="fas fa-check-circle"> 評價</i>'.$row[0].' / 5</h4><span class="bar"><span class="whole" style="width:'.$rate.'%;animation: whole 2s;"></span></span>
-        </li>
-        </div>';
-    }
-    $result->close();
+
+    $sumrate=calculateRate($conn,1,$brandid,0);
+    $rate=ROUND((float)$sumrate/6,1);
+    $ratebar=$rate*20;
+    echo '<style>@keyframes whole {
+        0% {width:0%; }
+        100% {width:'.$ratebar.'%; }
+    }</style>';
+    echo '<div class="right col-md-6 offset-md-3">
+    <li>
+        <h4><i class="fas fa-check-circle"> 評價</i>'.$rate.' / 5</h4><span class="bar"><span class="whole" style="width:'.$ratebar.'%;animation: whole 2s;"></span></span>
+    </li>
+    </div>';
 }
 
 function getBrandComment($conn, $BrandID)
@@ -252,27 +246,23 @@ function getBrandComment($conn, $BrandID)
     }
     /* fetch object array */
     while ($row = $result->fetch_row()) {
-        $avgrate=round(((Int)$row[3]+(Int)$row[4])/2,0);
         echo '<div class="row justify-content-center" id="commdiv">';
-        echo '<div class="col-md-2 text-center" id="user">
-        <img id="profile" src="data:'.$row[7].';base64,'.base64_encode($row[6]).'"/>
-        <p>'.$row[0].'</p>
+        echo '<div class="col-md-2 text-center" id="user">';
+        if ($row[6]!=null&&$row[7]!=null){
+            echo '<img id="profile" style="margin-top: 20px;" src="data:'.$row[7].';base64,'.base64_encode($row[6]).'"/>';
+        }else{
+            echo '<img id="profile" style="margin-top: 20px;" src="picture/profile.png"/>';            
+        }
+        echo '<p><b>'.$row[0].'</b></p>
         <p>'.$row[5].'</p>
         </div>';
-        echo '<div class="commentcontent col-md-5">
-            <div id="star">';
-        for ($i=0; $i<$avgrate;$i++){
-            echo '<i class="fas fa-star" id="bluestar"></i>';
-        }
-        for ($j=0; $j<5-$avgrate;$j++){
-            echo '<i class="fas fa-star" id="greystar"></i>';
-        }
-        echo '</div>
-            <div class="location">
+        echo '<div class="commentcontent col-md-5"><div class="location">
                 <img src="picture/pin.png" style="margin-top: 15px;"/>
                 <span style="margin-left: 5px;">'.$row[2].'</span>
-            </div>
-            <p id="storetext">'.$row[1].'</p>
+            </div>';
+        printRate($row[3],"環境");
+        printRate($row[4],"服務");
+        echo '<p id="storetext" style="margin-top: 10px;">'.$row[1].'</p>
         </div>
         </div>';
     }
@@ -280,130 +270,112 @@ function getBrandComment($conn, $BrandID)
     $result->close();
 }
 
-function getBrandSelection($conn)
-{
-    
-    if(isset($_GET["BrandName"]))
-    {
-        $BrandID = $_GET["BrandName"];
-        $query = "select BrandId, Brandname from BRAND";
-        $result = $conn->query($query);
-        setcookie("BrandIdforDB", $BrandID);
-        if ($result === false){
-            echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
-        }
-        /* fetch object array */
-        echo 
-        '
-        <script>
-            function redir()
-            {
-                document.getElementById("BrandForm").submit();
-            }
-        </script>
-        <div class="row">
-            <h1 class="col" style="font-size: 20px; width: 50px;" >
-                <form id = "BrandForm" action="/DrinkWeb/views/comment.php" method="get">
-                    <select name="BrandName" onchange="redir();">
-                        <option value = "choose">選擇品牌</option>';
-
-        while($row = $result->fetch_row())
-        {
-            echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
-        }
-        echo "
-                    </select>
-                </form>
-            </h1>
-        </div>
-        
-        ";
-        $query = "select ID, Storename from STORE where BrandID = ".$BrandID;
-        $result = $conn->query($query);
-        if ($result === false){
-            echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
-        }
-        echo 
-        '
-        <form action="submitComment.php">
-            <div class="row">
-                <h1 class="col" style="font-size: 20px;">
-                        <select name="StoreID">';
-                        
-            while($row = $result->fetch_row())
-            {
-                echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
-            }
-            echo '
-                    </select>
-                </h1>
-            </div>
-            
-            <div class="row" style="margin-top: 20px; text-align: center;">
-                <div class="col">
-                    <label for="customRange2">環境 environment</label>
-                    <input name = "range1" type="range" class="custom-range" min="0" max="5" id="customRange2">
-                </div>
-            </div>
-            <div class="row" style="margin-top: 10px; text-align: center;">
-                <div class="col">
-                            <label for="customRange2">服務 survice</label>
-                        <input name = "range2" type="range" class="custom-range" min="0" max="5" id="customRange2">
-                </div>
-            </div>
-            <div style="margin-top: 15px; font-size: 18px;">
-                <p>寫下想說的話</p>
-                <input type="text" name="storetext" placeholder="">
-            </div>
-            <div class="row justify-content-center">
-                    <button type = "submit" value = "submit">Next</button>
-            </div>
-
-        </form>
-        ';
+function printRate($rate,$ratename){
+    echo '<div id="star"><span style="font-size: 18px;">'.$ratename.'</span>';
+    for ($i=0;$i<$rate;$i++){
+        echo '<i class="fas fa-star" id="bluestar"></i>';
     }
-    else
-    {
-        $query = "select BrandId, Brandname from BRAND";
-        $result = $conn->query($query);
-        if ($result === false){
-            echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
-        }
-        /* fetch object array */
-        echo 
-        '
-        <script>
-            function redir()
-            {
-                document.getElementById("BrandForm").submit();
-            }
-        </script>
-        <br><br><br><br><br><br><br><br><br><br><br><br>
-        
-        <div class="row">
-            <h1 class="col" style="font-size: 20px;">
-                <form id = "BrandForm" action="/DrinkWeb/views/comment.php" method="get">
-                    <select name="BrandName" onchange="redir();">
-                        <option value = "choose">選擇品牌</option>';
-        while($row = $result->fetch_row())
-        {
-            echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
-        }
-        echo "
-                    </select>
-                </form>
-            </h1>
-        </div>
-        
-        ";
+    for ($j=0; $j<5-$rate;$j++){
+        echo '<i class="fas fa-star" id="greystar"></i>';
     }
-       
+    echo '</div>';
 }
 
+function calculateRate($conn,$flag,$brandid,$storeid){
+    if ($flag==1){
+        $query='SELECT AVG(EnvironRate), AVG(ServiceRate) from StoreComment where BrandID='.$brandid;
+    }else{
+        $query='SELECT AVG(EnvironRate), AVG(ServiceRate) from StoreComment where BrandID='.$brandid.' and StoreID='.$storeid;   
+    }
+    //$query="SELECT ROUND(AVG(WholeRate),1) from STORE where BrandID=$brandid";
+    $result=$conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    while ($row=$result->fetch_row()){
+        $sumrate=$row[0]+$row[1];
+    }
+    $result->close();
+    if ($flag==1){
+        $query='SELECT AVG(DrinkRate), AVG(IngredRate),AVG(SweetRate), AVG(PriceRate) from DrinkComment where BrandID='.$brandid;       
+    }
+    else{
+        $query='SELECT AVG(DrinkRate), AVG(IngredRate),AVG(SweetRate), AVG(PriceRate) from DrinkComment where BrandID='.$brandid.' AND StoreID='.$storeid ;
+    }
+    $result=$conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    while ($row=$result->fetch_row()){
+        $sumrate+=$row[0]+$row[1]+$row[2]+$row[3];
+    }
+    $result->close();
+    return $sumrate;
+}
 
-function getCommentMax($conn)
-{
-    $query = "select max(comment) from StoreComment";
+function getDrinkComment($conn,$BrandID){
+    $query="SELECT U.Username,U.Img, U.Mime, DrinkName, DrinkText, C.DrinkRate, C.IngredRate, C.SweetRate, C.PriceRate, DrinkImg, DrinkImgMime, Storename,CommentDate from DrinkComment C, STORE S, USER U where C.BrandID=S.BrandID and C.StoreID=S.ID and C.USERID=U.USERID and C.BrandID=".$BrandID;
+    $result = $conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    /* fetch object array */
+    while ($row = $result->fetch_row()) {
+        echo '<div class="row justify-content-center" id="commdiv">';
+        echo '<div class="col-md-2 text-center" id="user">';
+        if ($row[1]!=null&&$row[2]!=null){
+            echo '<img id="profile" style="margin-top: 60px;" src="data:'.$row[2].';base64,'.base64_encode($row[1]).'"/>';
+        }else{
+            echo '<img id="profile" style="margin-top: 60px;" src="picture/profile.png"/>';            
+        }
+        echo '<p><b>'.$row[0].'</b></p>
+        <p>'.$row[12].'</p>
+        </div><div class="commentcontent col-md-5"><div class="row"><div class="col-md-7">';
+        echo '<div class="location">
+                <img src="picture/pin.png" style="margin-top: 15px;"/>
+                <span style="margin-left: 5px;">'.$row[11].'</span>
+            </div>
+            <p id="storetext" style="font-size: 25px;"><b>'.$row[3].'</b></p>';
+            printRate($row[5],"飲料");
+            printRate($row[6],"配料");
+            printRate($row[7],"甜度");
+            printRate($row[8],"價格");
+        echo '<p id="storetext" style="margin-top: 10px;">'.$row[4].'</p>
+        </div><div class="col-md-5 align-self-center">';
+        if ($row[9]!=null&&$row[10]!=null){
+            echo '<img src="data:'.$row[10].';base64,'.base64_encode($row[9]).'"style="height: 150px; width: fit-content; object-fit: contain; background-color: transparent;"/></div></div></div></div>';
+        }else{
+            echo '<img src="picture/bubble-tea.png" style="height: 130px; width: 130px; object-fit: cover;"/></div></div></div></div>';
+        }
+
+    }
+}
+
+function getStorelist($conn,$brandid){
+    echo '<div class="container">
+    <div class="row">';
+    $query='SELECT Storename,City, District,ID,Storeimg, Storemime from STORE where BrandID='.$brandid;
+    $result=$conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    while ($row = $result->fetch_row()) {
+        $sumrate=calculateRate($conn,2,$brandid,$row[3]);
+        $rate=ROUND((float)$sumrate/6,1);
+        echo '<div class="col-md-4">
+                    <div class="outer">
+                        <p class="branchp">'.$row[1].$row[2].'</p>
+                        <p class="branchp">'.$rate.'</p><br>
+                        <a id="branchtitle" href="branch.php" onclick="setStore('.$row[3].')">'.$row[0].'</a>              
+                    </div>
+                </div>';
+
+    }
+    echo '</div></div>';
+}
+
+function getStoreComment($conn,$brandid, $storeid){
+    $query = "Select U.Username, StoreText, Storename, C.EnvironRate, C.ServiceRate, CommentDate, U.Img, U.Mime from StoreComment C, STORE S, USER U where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and C.BrandID = ".$brandid.' and C.StoreID='.$storeid;
     // count the numbers of the return rows and decide the pattern
     $result = $conn->query($query);
     if ($result === false){
@@ -411,10 +383,153 @@ function getCommentMax($conn)
     }
     /* fetch object array */
     while ($row = $result->fetch_row()) {
-        return $row[0];
+        echo '<div class="row justify-content-center" id="commdiv">';
+        echo '<div class="col-md-2 text-center" id="user">';
+        if ($row[6]!=null&&$row[7]!=null){
+            echo '<img id="profile" style="margin-top: 20px;" src="data:'.$row[7].';base64,'.base64_encode($row[6]).'"/>';
+        }else{
+            echo '<img id="profile" style="margin-top: 20px;" src="picture/profile.png"/>';            
+        }
+        echo '<p><b>'.$row[0].'</b></p>
+        <p>'.$row[5].'</p>
+        </div>';
+        echo '<div class="commentcontent col-md-5"><div class="location">
+                <img src="picture/pin.png" style="margin-top: 15px;"/>
+                <span style="margin-left: 5px;">'.$row[2].'</span>
+            </div>';
+        printRate($row[3],"環境");
+        printRate($row[4],"服務");
+        echo '<p id="storetext" style="margin-top: 10px;">'.$row[1].'</p>
+        </div>
+        </div>';
     }
+    /* free result set */
+    $result->close();
 }
 
+function getStoreDrinkComment($conn, $brandid, $storeid){
+    $query="SELECT U.Username,U.Img, U.Mime, DrinkName, DrinkText, C.DrinkRate, C.IngredRate, C.SweetRate, C.PriceRate, DrinkImg, DrinkImgMime, Storename,CommentDate from DrinkComment C, STORE S, USER U where C.BrandID=S.BrandID and C.StoreID=S.ID and C.USERID=U.USERID and C.BrandID=".$brandid.' and C.StoreID='.$storeid;
+    $result = $conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    /* fetch object array */
+    while ($row = $result->fetch_row()) {
+        echo '<div class="row justify-content-center" id="commdiv">';
+        echo '<div class="col-md-2 text-center" id="user">';
+        if ($row[1]!=null&&$row[2]!=null){
+            echo '<img id="profile" style="margin-top: 60px;" src="data:'.$row[2].';base64,'.base64_encode($row[1]).'"/>';
+        }else{
+            echo '<img id="profile" style="margin-top: 60px;" src="picture/profile.png"/>';            
+        }
+        echo '<p><b>'.$row[0].'</b></p>
+        <p>'.$row[12].'</p>
+        </div><div class="commentcontent col-md-5"><div class="row"><div class="col-md-7">';
+        echo '<div class="location">
+                <img src="picture/pin.png" style="margin-top: 15px;"/>
+                <span style="margin-left: 5px;">'.$row[11].'</span>
+            </div>
+            <p id="storetext" style="font-size: 25px;"><b>'.$row[3].'</b></p>';
+            printRate($row[5],"飲料");
+            printRate($row[6],"配料");
+            printRate($row[7],"甜度");
+            printRate($row[8],"價格");
+        echo '<p id="storetext" style="margin-top: 10px;">'.$row[4].'</p>
+        </div><div class="col-md-5 align-self-center">';
+        if ($row[9]!=null&&$row[10]!=null){
+            echo '<img src="data:'.$row[10].';base64,'.base64_encode($row[9]).'"style="height: 150px; width: fit-content; object-fit: contain; background-color: transparent;"/></div></div></div></div>';
+        }else{
+            echo '<img src="picture/bubble-tea.png" style="height: 130px; width: 130px; object-fit: cover;"/></div></div></div></div>';
+        }
 
+    }
 
+}
+
+function getStoreInfo($conn, $brandid, $storeid){
+    echo '<div class="row">';
+    $query='SELECT Brandname from BRAND where BrandID='.$brandid;
+    $result=$conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    if ($row=$result->fetch_row()){
+        $brandname=$row[0];
+    }
+    $query='SELECT * from STORE where BrandID='.$brandid.' and ID='.$storeid;
+    $result=$conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    if ($result->num_rows){
+        $row=$result->fetch_row();
+        echo '<div class="left col-md-4 text-center">
+        <img src="data:'.$row[8].';base64,'.base64_encode($row[7]).'" alt="" style="height: 200px; width: 200px; border-radius: 50%; margin-top: 50px;">
+        <br><p style="font-size: 50px; line-height: 60px;"><strong>'.$brandname.'</strong></p><p style="font-size: 50px; line-height: 60px;"><strong>'.$row[2].'</strong></p>
+        <div class="wrap"><img src="picture/733585.svg"/><p>'.$row[3].'</p></div>
+        <div class="wrap"><img src="picture/address.png"/><p>'.$row[4].$row[5].$row[6].'</p></div>
+        </div>';
+    }
+    $result->close();
+    $rate=array(0,0,0,0,0,0);
+    $ratebar=array(0,0,0,0,0,0);
+    $ratename=array("飲料","配料","甜度","價格","環境","服務");
+    $rateengname=array("drink","ingred","sweet","price","environ","service");
+    $rateimg=array("fas fa-tint","fas fa-utensil-spoon","fas fa-cubes","fas fa-dollar-sign","fas fa-hand-sparkles","fas fa-user-friends");
+
+    $query='SELECT AVG(DrinkRate),AVG(IngredRate),AVG(SweetRate),AVG(PriceRate) from DrinkComment where brandID='.$brandid.' and StoreID='.$storeid;
+    $result=$conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    echo '<div class="right col-md-6">';
+    if ($row=$result->fetch_row()){
+        for ($i=0;$i<4;$i++){
+            $rate[$i]=$row[$i];
+            $ratebar[$i]=$rate[$i]*20;
+            echo '<style>@keyframes '.$rateengname[$i].' {
+                0% {width:0%; }
+                100% {width:'.$ratebar[$i].'%; }
+            }</style>';
+            echo '
+                <li>
+                <h4><i class="'.$rateimg[$i].'">'.$ratename[$i].'</i>'.$rate[$i].' / 5</h4><span class="bar"><span class="'.$rateengname[$i].'" style="width:'.$ratebar[$i].'%;animation: '.$rateengname[$i].' 2s;"></span></span>
+            </li>';
+        }
+    }
+    $result->close();
+    $query='SELECT AVG(EnvironRate),AVG(ServiceRate) from StoreComment where brandID='.$brandid.' and StoreID='.$storeid;
+    $result=$conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    if ($row=$result->fetch_row()){
+        for ($i=4;$i<6;$i++){
+            $rate[$i]=$row[$i-4];
+            $ratebar[$i]=$rate[$i]*20;
+            echo '<style>@keyframes '.$rateengname[$i].' {
+                0% {width:0%; }
+                100% {width:'.$ratebar[$i].'%; }
+            }</style>';
+            echo '
+                <li>
+                <h4><i class="'.$rateimg[$i].'">'.$ratename[$i].'</i>'.$rate[$i].' / 5</h4><span class="bar"><span class="'.$rateengname[$i].'" style="width:'.$ratebar[$i].'%;animation: '.$rateengname[$i].' 2s;"></span></span>
+            </li>';
+        }
+    }
+    $result->close();
+    $sumrate=calculateRate($conn,2,$brandid, $storeid);
+    $wholerate=round((float)$sumrate/6,1);
+    $wholeratebar=$wholerate*20;
+    echo '<style>@keyframes whole {
+        0% {width:0%; }
+        100% {width:'.$wholeratebar.'%; }
+    }</style>';
+    echo '
+        <li>
+        <h4><i class="fas fa-check-circle">整體</i>'.$wholerate.' / 5</h4><span class="bar"><span class="whole" style="width:'.$wholeratebar.'%;animation: whole 2s;"></span></span>
+    </li>';
+    echo '</div></div>';
+
+}
 ?>

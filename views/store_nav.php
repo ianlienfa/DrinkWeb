@@ -17,10 +17,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="">留言</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">回報問題</a>
-                </li>
-
             </ul>
             <ul class="navbar-nav justify-content-right">
                 <?php

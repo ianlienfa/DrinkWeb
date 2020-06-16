@@ -1,0 +1,32 @@
+.outer {
+    width: 300px;
+    height: 140px;
+    background-color: rgb(240, 235, 235);
+    margin: 20px 0 20px 0;
+    box-shadow: 0 0 8px 0 lightgray;
+    padding: 15px 0 0 20px;
+}
+
+.branchp {
+    display: inline-block;
+    background-color: deepskyblue;
+    color: white;
+    font-family: 'Noto Sans TC', sans-serif;
+    width: 60px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 5px;
+}
+
+#branchtitle {
+    margin: -10px 0 0 0;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 40px;
+    font-weight: bolder;
+    color: darkgray;
+}
+
+#branchtitle:hover {
+    cursor: pointer;
+    color: deepskyblue;
+}
