@@ -532,4 +532,143 @@ function getStoreInfo($conn, $brandid, $storeid){
     echo '</div></div>';
 
 }
+
+
+function getBrandSelection($conn)
+{
+    
+    if(isset($_GET["BrandName"]))
+    {
+        $BrandID = $_GET["BrandName"];
+        $query = "select BrandId, Brandname from BRAND";
+        $result = $conn->query($query);
+        setcookie("BrandIdforDB", $BrandID);
+        if ($result === false){
+            echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+        }
+        /* fetch object array */
+        echo 
+        '
+        <script>
+            function redir()
+            {
+                document.getElementById("BrandForm").submit();
+            }
+        </script>
+        <div class="row">
+            <h1 class="col" style="font-size: 20px; width: 50px;" >
+                <form id = "BrandForm" action="/DrinkWeb/views/comment.php" method="get">
+                    <select name="BrandName" onchange="redir();">
+                        <option value = "choose">選擇品牌</option>';
+
+        while($row = $result->fetch_row())
+        {
+            echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
+        }
+        echo "
+                    </select>
+                </form>
+            </h1>
+        </div>
+        
+        ";
+        $query = "select ID, Storename from STORE where BrandID = ".$BrandID;
+        $result = $conn->query($query);
+        if ($result === false){
+            echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+        }
+        echo 
+        '
+        <form action="submitComment.php">
+            <div class="row">
+                <h1 class="col" style="font-size: 20px;">
+                        <select name="StoreID">';
+                        
+            while($row = $result->fetch_row())
+            {
+                echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
+            }
+            echo '
+                    </select>
+                </h1>
+            </div>
+            
+            <div class="row" style="margin-top: 20px; text-align: center;">
+                <div class="col">
+                    <label for="customRange2">環境 environment</label>
+                    <input name = "range1" type="range" class="custom-range" min="0" max="5" id="customRange2">
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px; text-align: center;">
+                <div class="col">
+                            <label for="customRange2">服務 survice</label>
+                        <input name = "range2" type="range" class="custom-range" min="0" max="5" id="customRange2">
+                </div>
+            </div>
+            <div style="margin-top: 15px; font-size: 18px;">
+                <p>寫下想說的話</p>
+                <input type="text" name="storetext" placeholder="">
+            </div>
+            <div class="row justify-content-center">
+                    <button type = "submit" value = "submit">Next</button>
+            </div>
+
+        </form>
+        ';
+    }
+    else
+    {
+        $query = "select BrandId, Brandname from BRAND";
+        $result = $conn->query($query);
+        if ($result === false){
+            echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+        }
+        /* fetch object array */
+        echo 
+        '
+        <script>
+            function redir()
+            {
+                document.getElementById("BrandForm").submit();
+            }
+        </script>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+        
+        <div class="row">
+            <h1 class="col" style="font-size: 20px;">
+                <form id = "BrandForm" action="/DrinkWeb/views/comment.php" method="get">
+                    <select name="BrandName" onchange="redir();">
+                        <option value = "choose">選擇品牌</option>';
+        while($row = $result->fetch_row())
+        {
+            echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
+        }
+        echo "
+                    </select>
+                </form>
+            </h1>
+        </div>
+        
+        ";
+    }
+       
+}
+
+
+function getCommentMax($conn)
+{
+    $query = "select max(comment) from StoreComment";
+    // count the numbers of the return rows and decide the pattern
+    $result = $conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    /* fetch object array */
+    while ($row = $result->fetch_row()) {
+        return $row[0];
+    }
+}
+
+
+
 ?>

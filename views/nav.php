@@ -15,8 +15,7 @@
                     <a class="nav-link" href="#list">店家一覽</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="cursor: pointer;" href="comment.php">留言</a>
-                </li>
+                <a href="comment.php" class="nav-link" style="cursor: pointer;">留言</a>                </li>
             </ul>
             <ul class="navbar-nav justify-content-right">
                 <?php
