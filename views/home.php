@@ -1,7 +1,9 @@
 <?php
 require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
 require_once "/opt/lampp/htdocs/DrinkWeb/include/include.php";
+require_once dirname(__FILE__)."/gotop.php";
 require_once dirname(__FILE__)."/nav.php";
+require_once dirname(__FILE__)."/comment.php";
 $db = new DBController();
 $conn = $db->connectDB();
 if (isset($_POST['search'])&&isset($_POST['search_btn'])){
@@ -44,25 +46,17 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
 
             });
         });
-
-        $(function() {
-            //control display of goTop button and motion
-            $("#gotop").click(function() {
-                jQuery("html,body").animate({
-                    scrollTop: 0
-                }, 1000);
-            });
-            $(window).scroll(function() {
-                if ($(this).scrollTop() > 150) {
-                    $('#gotop').fadeIn("fast");
-                } else {
-                    $('#gotop').stop().fadeOut("fast");
-                }
-            });
-        });
-
         function setBrand($id){
             document.cookie="BrandID="+$id;
+        }
+
+        function commentBtn() {
+            
+            var commentdiv = document.getElementById('commentdiv');
+            if (commentdiv.style.display === 'none') {
+                $('#commentdiv').fadeIn();
+                commentdiv.style.display = 'inline-block';
+            }
         }
         </script>
         
@@ -73,7 +67,7 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
             <div class='jumbotron'>
                 <div class='container'>
                     <div class="col-md-12">
-                        <h1>「珍吸生命，人人有擇」</h1>
+                        <h1 style="text-align: start;">「珍吸生命，人人有擇」</h1>
                         <p class='lead'>全台唯一，手搖專屬評論網站</p>
                         <a class='btn' href="#">現在就留下第一則評論</a>
                     </div>
@@ -101,6 +95,5 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
             ?>
             </div>
         </section>
-        <button id="gotop"></button>
     </body>
 </html>

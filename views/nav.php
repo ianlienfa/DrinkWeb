@@ -15,7 +15,7 @@
                     <a class="nav-link" href="#list">店家一覽</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">留言</a>
+                    <a class="nav-link" style="cursor: pointer;" onclick="commentBtn()">留言</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">回報問題</a>

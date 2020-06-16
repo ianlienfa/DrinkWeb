@@ -1,0 +1,422 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+p,
+a,
+input,
+label,
+textarea,
+span,
+ul,
+li {
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+.btn {
+    background-color: deepskyblue;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 20px;
+}
+
+img {
+    max-width: 100%;
+}
+
+header nav img {
+    width: 40px;
+    height: 40px;
+}
+
+header li {
+    margin: 0 18px;
+}
+
+#info img {
+    margin-bottom: 20px;
+}
+
+#info h1 {
+    font-size: 55px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.left {
+    margin: 60px auto;
+}
+
+.right {
+    list-style: none;
+    width: 500px;
+    margin: 30px auto;
+}
+
+.right li {
+    margin: 20px 0;
+}
+
+.right i {
+    margin: 0 10px 0 0;
+}
+
+.topic {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.bar {
+    background: white;
+    display: block;
+    height: 10px;
+    border: 2px solid deepskyblue;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 5px 5px 5px lightgray;
+}
+
+.bar span {
+    height: 10px;
+    float: left;
+    background: deepskyblue;
+}
+
+.drink {
+    width: 90%;
+    animation: drink 2s;
+}
+
+@keyframes drink {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 90%;
+    }
+}
+
+.topping {
+    width: 75%;
+    animation: topping 2s;
+}
+
+@keyframes topping {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 75%;
+    }
+}
+
+.sweet {
+    width: 60%;
+    animation: sweet 2s;
+}
+
+@keyframes sweet {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 60%;
+    }
+}
+
+.serve {
+    width: 86%;
+    animation: serve 2s;
+}
+
+@keyframes serve {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 86%;
+    }
+}
+
+.whole {
+    width: 78%;
+    animation: whole 2s;
+}
+
+@keyframes whole {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 78%;
+    }
+}
+
+#menubtn {
+    border: none;
+    /* Remove borders */
+    outline: none;
+    /* Remove outline */
+    background-color: transparent;
+    background-image: url("menu.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+    margin-left: 10px;
+}
+
+#menubtn:hover {
+    background-image: url("menu2.png");
+}
+
+#close {
+    border: none;
+    /* Remove borders */
+    outline: none;
+    /* Remove outline */
+    background-color: transparent;
+    background-image: url("close2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+    vertical-align: top;
+    margin-top: -15px;
+    margin-left: -15px;
+}
+
+#close:hover {
+    background-image: url("close.png");
+}
+
+#user {
+    background-color: RGB(242, 242, 242);
+    width: 100%;
+    box-shadow: 0 0 8px lightgrey;
+    font-family: 'Noto Sans TC', sans-serif;
+    margin: 20px;
+    padding: 10px;
+}
+
+.commentcontent {
+    background-color: RGB(242, 242, 242);
+    width: 100%;
+    box-shadow: 0 0 8px lightgrey;
+    font-family: 'Noto Sans TC', sans-serif;
+    margin: 20px;
+    padding: 20px;
+    padding-left: 30px;
+}
+
+i {
+    text-align: center;
+    margin: 5px;
+}
+
+h5 {
+    margin: 5px 0;
+    line-height: 2;
+}
+
+p {
+    line-height: 5px;
+}
+
+#bluestar {
+    color: deepskyblue;
+}
+
+#greystar {
+    color: grey;
+}
+
+#profile {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+.location img {
+    height: 20px;
+    width: 20px;
+}
+
+#storetext {
+    line-height: 20px;
+}
+
+.onoffswitch {
+    position: relative;
+    width: 90px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    text-align: center;
+    left: 50%;
+    margin-left: -45px;
+    margin-top: 50px;
+}
+
+.onoffswitch-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.onoffswitch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 30px;
+    padding: 0;
+    line-height: 30px;
+    font-size: 14px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+    content: "評論";
+    padding-left: 10px;
+    background-color: #21C0FC;
+    text-align: left;
+    color: #FFFFFF;
+}
+
+.onoffswitch-inner:after {
+    content: "門市";
+    padding-right: 10px;
+    background-color: lightgrey;
+    color: #999999;
+    text-align: right;
+}
+
+.onoffswitch-switch {
+    display: block;
+    width: 18px;
+    margin: 6px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 56px;
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
+
+.onoffswitch2 {
+    position: relative;
+    width: 95px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    text-align: center;
+    left: 50%;
+    margin-left: -45px;
+    margin-top: 50px;
+}
+
+.onoffswitch2-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.onoffswitch2-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.onoffswitch2-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch2-inner:before,
+.onoffswitch2-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 30px;
+    padding: 0;
+    line-height: 30px;
+    font-size: 14px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.onoffswitch2-inner:before {
+    content: "店家評論";
+    padding-left: 10px;
+    background-color: #21C0FC;
+    text-align: left;
+    color: #FFFFFF;
+}
+
+.onoffswitch2-inner:after {
+    content: "飲料評論";
+    padding-right: 5px;
+    background-color: lightgrey;
+    color: #999999;
+    text-align: right;
+}
+
+.onoffswitch2-switch {
+    display: block;
+    width: 18px;
+    margin: 6px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 56px;
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch2-checkbox:checked+.onoffswitch2-label .onoffswitch2-inner {
+    margin-left: 0;
+}
+
+.onoffswitch2-checkbox:checked+.onoffswitch2-label .onoffswitch2-switch {
+    right: 0px;
+}

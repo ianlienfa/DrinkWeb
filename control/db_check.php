@@ -221,21 +221,21 @@ function getBrandInfo($conn, $brandid){
         </div>';
     }
     $result->close();
-    $query="SELECT ROUND(AVG(Rate),1) from STORE where BrandID=$brandid";
+    $query="SELECT ROUND(AVG(WholeRate),1) from STORE where BrandID=$brandid";
     $result=$conn->query($query);
     if ($result === false){
         echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
     }
     if ($result->num_rows){
         $row=$result->fetch_row();
-        $rate=(int)$row[0]*10;
+        $rate=(int)$row[0]*10*2;
         echo '<style>@keyframes whole {
             0% {width:0%; }
             100% {width:'.$rate.'%; }
         }</style>';
         echo '<div class="right col-md-6 offset-md-3">
         <li>
-            <h4><i class="fas fa-check-circle"> 評價</i>'.$row[0].'</h4><span class="bar"><span class="whole" style="width:'.$rate.'%;animation: whole 2s;"></span></span>
+            <h4><i class="fas fa-check-circle"> 評價</i>'.$row[0].' / 5</h4><span class="bar"><span class="whole" style="width:'.$rate.'%;animation: whole 2s;"></span></span>
         </li>
         </div>';
     }
@@ -244,25 +244,43 @@ function getBrandInfo($conn, $brandid){
 
 function getBrandComment($conn, $BrandID)
 {
-    $query = "select Username, StoreText, Storename from COMMENT C, STORE S, USER U where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and C.BrandID = ".$BrandID;
+    $query = "Select U.Username, StoreText, Storename, C.EnvironRate, C.ServiceRate, CommentDate, U.Img, U.Mime from StoreComment C, STORE S, USER U where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and C.BrandID = ".$BrandID;
     // count the numbers of the return rows and decide the pattern
     $result = $conn->query($query);
     if ($result === false){
         echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
     }
-    
-    echo "<br><br>";
-
     /* fetch object array */
     while ($row = $result->fetch_row()) {
-        echo '<div class = "row offset-3">
-            <p>'.$row[0].' :   '.$row[1].'   -------------------於'.$row[2].'</p>
+        $avgrate=round(((Int)$row[3]+(Int)$row[4])/2,0);
+        echo '<div class="row justify-content-center" id="commdiv">';
+        echo '<div class="col-md-2 text-center" id="user">
+        <img id="profile" src="data:'.$row[7].';base64,'.base64_encode($row[6]).'"/>
+        <p>'.$row[0].'</p>
+        <p>'.$row[5].'</p>
+        </div>';
+        echo '<div class="commentcontent col-md-5">
+            <div id="star">';
+        for ($i=0; $i<$avgrate;$i++){
+            echo '<i class="fas fa-star" id="bluestar"></i>';
+        }
+        for ($j=0; $j<5-$avgrate;$j++){
+            echo '<i class="fas fa-star" id="greystar"></i>';
+        }
+        echo '</div>
+            <div class="location">
+                <img src="picture/pin.png" style="margin-top: 15px;"/>
+                <span style="margin-left: 5px;">'.$row[2].'</span>
             </div>
-            ';
+            <p id="storetext">'.$row[1].'</p>
+        </div>
+        </div>';
     }
     /* free result set */
     $result->close();
 }
+
+
 
 
 ?>
