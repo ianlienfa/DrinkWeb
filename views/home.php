@@ -2,10 +2,11 @@
 require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
 require_once "/opt/lampp/htdocs/DrinkWeb/include/include.php";
 require_once dirname(__FILE__)."/gotop.php";
-require_once dirname(__FILE__)."/nav.php";
-require_once dirname(__FILE__)."/comment.php";
+
 $db = new DBController();
 $conn = $db->connectDB();
+require_once dirname(__FILE__)."/nav.php";
+
 if (isset($_POST['search'])&&isset($_POST['search_btn'])){
     $id=searchBrand($conn,$_POST['search']);
     if ($id!=0){
@@ -20,6 +21,7 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
         </script>";
     }
 }
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -50,14 +52,6 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
             document.cookie="BrandID="+$id;
         }
 
-        function commentBtn() {
-            
-            var commentdiv = document.getElementById('commentdiv');
-            if (commentdiv.style.display === 'none') {
-                $('#commentdiv').fadeIn();
-                commentdiv.style.display = 'inline-block';
-            }
-        }
         </script>
         
     </head>

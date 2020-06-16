@@ -18,6 +18,36 @@ li {
     font-family: 'Noto Sans TC', sans-serif;
 }
 
+.BTN:before{
+    content:"";
+    position: absolute;
+    
+    width:6%;
+    height: 0%;
+    background: deepskyblue;
+    z-index:-1;
+    transition:0.8s;
+    margin: 8px;
+}
+
+.btn1::before,.btn3::before{
+    top:0;
+    margin: -5px;
+    border-radius:0 0 40% 40%;
+}
+.btn2::before,.btn4::before{
+    bottom:0;
+    margin: 5px;
+    border-radius:40% 40% 0 0;
+}
+
+
+.btn1:hover::before, .btn2:hover::before{
+    height:180%;
+}
+.btn3:hover::before, .btn4:hover::before{
+    height: 180%;
+}
 
 /*大標題藍色按鈕*/
 
@@ -72,7 +102,7 @@ li {
 /*搜尋列*/
 
 
-/*.search {
+/* .search {
     background-color: lightgray;
     height: 40px;
     padding: 10px;
@@ -101,7 +131,15 @@ li {
     transition: 0.4s;
     line-height: 40px;
     width: 500px;
-}*/
+} */
+
+/* #forminput:hover > .search-txt{
+    width: 300px;
+    padding: 0 4px
+}
+#forminput:hover > .search-btn{
+    background: black;
+} */
 
 
 /*店家們*/

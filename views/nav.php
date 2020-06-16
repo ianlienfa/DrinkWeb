@@ -1,3 +1,4 @@
+
 <div class='container'>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: white;">
         <a class="navbar-brand" href="#">
@@ -15,7 +16,7 @@
                     <a class="nav-link" href="#list">店家一覽</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="cursor: pointer;" onclick="commentBtn()">留言</a>
+                    <a href="comment.php" class="nav-link" style="cursor: pointer;">留言</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">回報問題</a>
