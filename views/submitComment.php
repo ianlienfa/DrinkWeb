@@ -9,8 +9,12 @@
     $EnvironRate = $_GET["range1"];
     $ServiceRate = $_GET["range2"];
     $StoreText = $_GET["storetext"];
-    // $UserID = $_COOKIE["login"];
     $UserID = 1;
+    if(isset($_COOKIE["login"]))
+    {
+        $UserID = $_COOKIE["login"];
+    }
+    
     
 
     $commentID = getCommentMax($conn);
@@ -26,7 +30,32 @@
 ?>
 
 <script >
-    
-    document.location.href ="/DrinkWeb/views/home.php";
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+            }
+        }
+    return "";
+    }
+    let params=(new URL(document.location)).searchParams;
+    let storeId=params.get('StoreID');
+    let brandId = getCookie('BrandIdforDB');
+    let UserId = 1;
+    let CommentID = <?php echo $commentID; ?>;
+    if(getCookie('login') != '')
+    {
+        UserId = getCookie('login');
+    }
+
+    document.location.href ="/DrinkWeb/views/DrinkComment.php?" + "BrandID=" +brandId+ "&StoreID=" + storeId + "&UserID=" + UserId + "&CommentID=" + CommentID;
     
 </script>
