@@ -14,18 +14,16 @@
     $SweetRate = $_GET["SweetRate"];
     $PriceRate = $_GET["PriceRate"];
     $DrinkRate = $_GET["DrinkRate"];
+    $date=date("Y-m-d");
 
 
-    $query = "INSERT INTO DrinkComment(CommentID, brandID, StoreID, UserID, DrinkName, DrinkText, DrinkRate, IngredRate, SweetRate, PriceRate) VALUES ("
-    .$CommentID. ", " .$BrandID. ", ".$StoreID. ", " .$UserID. ", '" .$DrinkName. "', '".$DrinkText. "', ".$DrinkRate.", ".$IngredRate.", ".$SweetRate.", ".$PriceRate. ")";    
+    $query = "INSERT INTO DrinkComment(CommentID, brandID, StoreID, UserID, DrinkName, DrinkText, DrinkRate, IngredRate, SweetRate, PriceRate,CommentDate) VALUES ("
+    .$CommentID. ", " .$BrandID. ", ".$StoreID. ", " .$UserID. ", '" .$DrinkName. "', '".$DrinkText. "', ".$DrinkRate.", ".$IngredRate.", ".$SweetRate.", ".$PriceRate.",'".$date. "')";    
     // echo $query;
     $result = $conn->query($query);
     if ($result === false){
         echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
     }
-
-
-
 ?>
 
 <script>

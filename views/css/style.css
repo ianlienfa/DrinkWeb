@@ -178,7 +178,3 @@ li {
 #gotop:hover {
     background-image: url("top2.png");
 }
-
-.checked {
-    color: orange;
-}

@@ -15,6 +15,9 @@
                     <a class="nav-link" href="#list">店家一覽</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#info">留言一覽</a>
+                </li>
+                <li class="nav-item">
                 <a href="comment.php" class="nav-link" style="cursor: pointer;">留言</a>                </li>
             </ul>
             <ul class="navbar-nav justify-content-right">
@@ -38,8 +41,6 @@
                         </li><li class="nav-item">
                         <a class="nav-link" href="logout.php">登出</a>
                         </li>';
-                        $conn->close();
-                        unset($db);
                     }else{
                         echo '<li class="nav-item">
                         <a class="nav-link" href="login.php">登入</a>

@@ -15,7 +15,10 @@
                     <a class="nav-link" href="home.php#list">店家一覽</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">留言</a>
+                    <a class="nav-link" href="home.php#info">留言一覽</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="comment.php">留言</a>
                 </li>
             </ul>
             <ul class="navbar-nav justify-content-right">

@@ -536,42 +536,53 @@ function getStoreInfo($conn, $brandid, $storeid){
 
 function getBrandSelection($conn)
 {
-    
-    if(isset($_GET["BrandName"]))
-    {
-        $BrandID = $_GET["BrandName"];
-        $query = "select BrandId, Brandname from BRAND";
-        $result = $conn->query($query);
-        setcookie("BrandIdforDB", $BrandID);
-        if ($result === false){
-            echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
-        }
-        /* fetch object array */
-        echo 
-        '
-        <script>
-            function redir()
-            {
-                document.getElementById("BrandForm").submit();
-            }
-        </script>
-        <div class="row">
-            <h1 class="col" style="font-size: 20px; width: 50px;" >
-                <form id = "BrandForm" action="/DrinkWeb/views/comment.php" method="get">
-                    <select name="BrandName" onchange="redir();">
-                        <option value = "choose">選擇品牌</option>';
 
+    $query = "select BrandId, Brandname from BRAND";
+    $result = $conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    /* fetch object array */
+    echo 
+    '
+    <script>
+        function redir()
+        {
+            document.getElementById("BrandForm").submit();
+        }
+    </script>
+    <div class="row" style="margin-top: 30px;"><div class="col"><h2><b>對品牌評價吧！</b></h2></div></div>
+    <div class="row">
+        <div class="col" style="font-size: 20px; width: 50px;" >
+            <form id = "BrandForm" action="/DrinkWeb/views/comment.php" method="get">
+                <select name="BrandName" onchange="redir();">';
+    if (!isset($_GET["BrandName"])){
+        echo '<option value = "choose">選擇品牌</option>';
         while($row = $result->fetch_row())
         {
             echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
         }
-        echo "
-                    </select>
-                </form>
-            </h1>
+    }else{
+        while($row = $result->fetch_row())
+        {
+            if ($row[0]!==$_COOKIE['BrandIdforDB']){
+                echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
+            }else{
+                echo '<option selected="selected" value = "'.$row[0].'">'.$row[1].'</option>';               
+            }
+        }
+    }
+    echo "
+                </select>
+            </form>
         </div>
-        
-        ";
+    </div>
+    
+    "; 
+    if(isset($_GET["BrandName"]))
+    {
+        $BrandID = $_GET["BrandName"];
+        setcookie("BrandIdforDB", $BrandID);
         $query = "select ID, Storename from STORE where BrandID = ".$BrandID;
         $result = $conn->query($query);
         if ($result === false){
@@ -579,9 +590,9 @@ function getBrandSelection($conn)
         }
         echo 
         '
-        <form action="submitComment.php">
+        <form action="submitComment.php"">
             <div class="row">
-                <h1 class="col" style="font-size: 20px;">
+                <div class="col" style="font-size: 20px;">
                         <select name="StoreID">';
                         
             while($row = $result->fetch_row())
@@ -590,40 +601,39 @@ function getBrandSelection($conn)
             }
             echo '
                     </select>
-                </h1>
+                </div>
             </div>
             
             <div class="row" style="margin-top: 20px; text-align: center;">
                 <div class="col">
-                    <label for="customRange2">環境 environment</label>
-                    <input name = "range1" type="range" class="custom-range" min="0" max="5" id="customRange2">
+                    <label for="customRange2">環境</label>
+                    <input name = "range1" type="range" class="slider" min="0" max="5" id="customRange2">
                 </div>
             </div>
             <div class="row" style="margin-top: 10px; text-align: center;">
                 <div class="col">
-                            <label for="customRange2">服務 survice</label>
-                        <input name = "range2" type="range" class="custom-range" min="0" max="5" id="customRange2">
+                            <label for="customRange2">服務</label>
+                        <input name = "range2" type="range" class="slider" min="0" max="5" id="customRange2">
                 </div>
             </div>
             <div style="margin-top: 15px; font-size: 18px;">
                 <p>寫下想說的話</p>
-                <input type="text" name="storetext" placeholder="">
+                <input type="text" name="storetext" id="StoreText" placeholder="" autocomplete="off">
             </div>
             <div class="row justify-content-center">
-                    <button type = "submit" value = "submit">Next</button>
+                    <button type = "submit" value = "submit" id="next">Next</button>
             </div>
 
         </form>
         ';
     }
-    else
+    /*else
     {
         $query = "select BrandId, Brandname from BRAND";
         $result = $conn->query($query);
         if ($result === false){
             echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
         }
-        /* fetch object array */
         echo 
         '
         <script>
@@ -650,7 +660,7 @@ function getBrandSelection($conn)
         </div>
         
         ";
-    }
+    }*/
        
 }
 
@@ -667,6 +677,78 @@ function getCommentMax($conn)
     while ($row = $result->fetch_row()) {
         return $row[0];
     }
+}
+
+function getAllComment($conn){
+    $query = "Select U.Username, StoreText, Storename, C.EnvironRate, C.ServiceRate, CommentDate, U.Img, U.Mime,B.Brandname from StoreComment C, STORE S, USER U,BRAND B where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and B.BrandID=C.BrandID";
+    // count the numbers of the return rows and decide the pattern
+    $result = $conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    /* fetch object array */
+    while ($row = $result->fetch_row()) {
+        echo '<div class="row justify-content-center" id="commdiv">';
+        echo '<div class="col-md-2 text-center" id="user">';
+        if ($row[6]!=null&&$row[7]!=null){
+            echo '<img id="profile" style="margin-top: 30px;" src="data:'.$row[7].';base64,'.base64_encode($row[6]).'"/>';
+        }else{
+            echo '<img id="profile" style="margin-top: 30px;" src="picture/profile.png"/>';            
+        }
+        echo '<p><b>'.$row[0].'</b></p>
+        <p style="margin-top: -15px;">'.$row[5].'</p>
+        </div>';
+        echo '<div class="commentcontent col-md-5"><span style="font-size: 30px;"><b>'.$row[8].'</b></span><div class="location" style="margin-bottom: 10px;">
+                <img src="picture/pin.png"/>
+                <span style="margin-left: 5px;">'.$row[2].'</span>
+            </div>';
+        printRate($row[3],"環境");
+        printRate($row[4],"服務");
+        echo '<p id="storetext" style="margin-top: 10px;">'.$row[1].'</p>
+        </div>
+        </div>';
+    }
+    /* free result set */
+    $result->close();
+}
+
+function getAllDrinkComment($conn){
+    $query="SELECT U.Username,U.Img, U.Mime, DrinkName, DrinkText, C.DrinkRate, C.IngredRate, C.SweetRate, C.PriceRate, DrinkImg, DrinkImgMime, Storename,CommentDate, B.Brandname from DrinkComment C, STORE S, USER U, BRAND B where C.BrandID=S.BrandID and C.StoreID=S.ID and C.USERID=U.USERID and B.BrandID=C.BrandID";
+    $result = $conn->query($query);
+    if ($result === false){
+        echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+    }
+    /* fetch object array */
+    while ($row = $result->fetch_row()) {
+        echo '<div class="row justify-content-center" id="commdiv">';
+        echo '<div class="col-md-2 text-center" id="user">';
+        if ($row[1]!=null&&$row[2]!=null){
+            echo '<img id="profile" style="margin-top: 80px;" src="data:'.$row[2].';base64,'.base64_encode($row[1]).'"/>';
+        }else{
+            echo '<img id="profile" style="margin-top: 80px;" src="picture/profile.png"/>';            
+        }
+        echo '<p><b>'.$row[0].'</b></p>
+        <p style="margin-top: -15px;">'.$row[12].'</p>
+        </div><div class="commentcontent col-md-5"><div class="row"><div class="col-md-7"><span style="font-size: 30px;"><b>'.$row[13].'</b></span>';
+        echo '<div class="location" style="margin-top: 5px;">
+                <img src="picture/pin.png" />
+                <span style="margin-left: 5px;">'.$row[11].'</span>
+            </div>
+            <p id="storetext" style="font-size: 25px; margin-top: 20px;"><b>'.$row[3].'</b></p>';
+            printRate($row[5],"飲料");
+            printRate($row[6],"配料");
+            printRate($row[7],"甜度");
+            printRate($row[8],"價格");
+        echo '<p id="storetext" style="margin-top: 10px;">'.$row[4].'</p>
+        </div><div class="col-md-5 align-self-center">';
+        if ($row[9]!=null&&$row[10]!=null){
+            echo '<img src="data:'.$row[10].';base64,'.base64_encode($row[9]).'"style="height: 150px; width: fit-content; object-fit: contain; background-color: transparent;"/></div></div></div></div>';
+        }else{
+            echo '<img src="picture/bubble-tea.png" style="height: 130px; width: 130px; object-fit: cover;"/></div></div></div></div>';
+        }
+
+    }
+
 }
 
 

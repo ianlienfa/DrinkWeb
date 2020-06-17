@@ -9,17 +9,15 @@
     $EnvironRate = $_GET["range1"];
     $ServiceRate = $_GET["range2"];
     $StoreText = $_GET["storetext"];
-    $UserID = 1;
     if(isset($_COOKIE["login"]))
     {
         $UserID = $_COOKIE["login"];
     }
-    
-    
 
     $commentID = getCommentMax($conn);
     $commentID = $commentID + 1;
-    $query = "INSERT INTO StoreComment(comment, brandID, StoreID, UserID, StoreText, EnvironRate, ServiceRate) VALUES (" .$commentID. ", " .$BrandID. ", ".$StoreID. ", " .$UserID. ", '" .$StoreText. "', ".$EnvironRate. ", ".$ServiceRate. ")";    
+    $date=date("Y-m-d");
+    $query = "INSERT INTO StoreComment(comment, brandID, StoreID, UserID, StoreText, EnvironRate, ServiceRate,CommentDate) VALUES (" .$commentID. ", " .$BrandID. ", ".$StoreID. ", " .$UserID. ", '" .$StoreText. "', ".$EnvironRate. ", ".$ServiceRate.",'".$date. "')";    
     
     $result = $conn->query($query);
     if ($result === false){

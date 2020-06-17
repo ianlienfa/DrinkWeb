@@ -5,6 +5,10 @@ h1 {
     text-align: center;
 }
 
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
 h4 {
     font-family: 'Noto Sans TC', sans-serif;
 }
@@ -78,13 +82,13 @@ input {
 
 #commentdiv {
     width: 500px;
-    height: 550px;
+    height: 600px;
     z-index: 1;
     position: absolute;
     text-align: center;
     left: 50%;
     top: 50%;
-    margin-top: -250px;
+    margin-top: -350px;
     margin-left: -250px;
     box-shadow: 8px 8px 8px 5px grey;
 }
@@ -125,15 +129,14 @@ input {
     /* Remove outline */
     background-color: black;
     color: white;
-    height: 30px;
+    height: 40px;
     width: fit-content;
     vertical-align: top;
     border-radius: 30px;
-    font-size: 18px;
+    font-size: 20px;
     padding: 0 10px;
+    margin-top: 30px;
     font-family: 'Noto Sans TC', sans-serif;
-    margin-top: 60px;
-    margin-right: 50px;
 }
 
 #next:hover {
@@ -141,15 +144,85 @@ input {
     color: black;
 }
 
-#commentdiv2 {
+#commentdiv {
     width: 500px;
-    height: 550px;
+    height: 600px;
     z-index: 1;
     position: absolute;
     text-align: center;
     left: 50%;
     top: 50%;
-    margin-top: -250px;
+    margin-top: -300px;
     margin-left: -250px;
     box-shadow: 8px 8px 8px 5px grey;
+}
+
+#submitbtn {
+    background-color: black;
+    border-style: solid;
+    border-radius: 50px;
+    font-family: 'Noto Sans TC', sans-serif;
+    border-width: 1px;
+    border-color: black;
+    outline: none;
+    width: fit-content;
+    text-align: center;
+    color: white;
+    padding: 5px 10px;
+}
+
+.inputdiv {
+    margin-top: 20px;
+}
+
+.crop {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+}
+
+#img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    object-position: center;
+}
+
+#DrinkText {
+    text-align: center;
+}
+
+#StoreText {
+    text-align: center;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 60%;
+    height: 10px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-left: 10px;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: deepskyblue;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: deepskyblue;
+    cursor: pointer;
 }

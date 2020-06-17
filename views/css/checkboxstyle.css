@@ -1,0 +1,144 @@
+#user {
+    background-color: RGB(242, 242, 242);
+    width: 100%;
+    box-shadow: 0 0 8px lightgrey;
+    font-family: 'Noto Sans TC', sans-serif;
+    margin: 20px;
+    padding: 10px;
+}
+
+.commentcontent {
+    background-color: RGB(242, 242, 242);
+    width: 100%;
+    box-shadow: 0 0 8px lightgrey;
+    font-family: 'Noto Sans TC', sans-serif;
+    margin: 20px;
+    padding: 20px;
+    padding-left: 30px;
+}
+
+#bluestar {
+    color: deepskyblue;
+}
+
+#greystar {
+    color: grey;
+}
+
+#profile {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.location img {
+    height: 20px;
+    width: 20px;
+}
+
+#storetext {
+    line-height: 20px;
+}
+
+.onoffswitch2 {
+    position: relative;
+    width: 95px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    text-align: center;
+    left: 50%;
+    margin-left: -45px;
+    margin-top: 50px;
+}
+
+.onoffswitch2-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.onoffswitch2-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.onoffswitch2-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch2-inner:before,
+.onoffswitch2-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 30px;
+    padding: 0;
+    line-height: 30px;
+    font-size: 14px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.onoffswitch2-inner:before {
+    content: "店家評論";
+    padding-left: 10px;
+    background-color: #21C0FC;
+    text-align: left;
+    color: #FFFFFF;
+}
+
+.onoffswitch2-inner:after {
+    content: "飲料評論";
+    padding-right: 5px;
+    background-color: lightgrey;
+    color: #999999;
+    text-align: right;
+}
+
+.onoffswitch2-switch {
+    display: block;
+    width: 18px;
+    margin: 6px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 56px;
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch2-checkbox:checked+.onoffswitch2-label .onoffswitch2-inner {
+    margin-left: 0;
+}
+
+.onoffswitch2-checkbox:checked+.onoffswitch2-label .onoffswitch2-switch {
+    right: 0px;
+}
+
+.wrap {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-left: 80px;
+}
+
+.wrap p {
+    padding-left: 10px;
+}
+
+.wrap img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}

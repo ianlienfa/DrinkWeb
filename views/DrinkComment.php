@@ -1,6 +1,7 @@
 <?php
     require_once "/opt/lampp/htdocs/DrinkWeb/include/include.php";
     require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
+    require_once dirname(__FILE__)."/store_nav.php";
     $db = new DBController();
     $conn = $db->connectDB();
 
@@ -22,48 +23,47 @@
 ?>
 
 <link rel="stylesheet" href="css/comment.css">
+<link rel="stylesheet" href="css/register_style.css">
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1356455_c5d3d3ohlbq.css">
 <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<div class="container">
+<div class="card container" id="commentdiv" style="height: 800px; margin-top: -270px; margin-bottom: 20px;">
     <div class="row align-items-center" style="height: 100%; margin-top: 10px;">
         <div class="col text-center">
-            <h1>Drink Comment</h1>
+            <h2 style="margin-top: 20px;"><b>對手搖飲評價吧！</b></h2>
             <form id = "DrinkFrom" action="submitDrinkComment.php" style="text-align:center; margin-top: 10px;" enctype="multipart/form-data">
+                <div class="inputdiv"><h6>手搖飲品項</h6>
+                    <input id="DrinkName" style="width: 200px; text-align: center;" type="text" name="DrinkName" autocomplete="off">
+                </div>
                 <div class="inputdiv">
-                    <!-- <div class="crop">
-                        <img id="img" style="height: 60px; width: 60px;"/>
-                    </div> -->
-                    <!-- </label> -->
-                    <!-- <br> -->
-                    <div id="image" type="button" onmouseover="this.style.backgroundColor='white'; this.style.color='black';" onmouseout="this.style.backgroundColor='black'; this.style.color='white';">Choose Image
-                    <input id="r_img" class="inputFile" type="file" name="r_img" onchange="show(this.files)">
+                    <div class="crop">
+                        <img id="img" style="height: 100px; width: 100px;"/>
                     </div>
                     <br>
+                    <div id="image" type="button" onmouseover="this.style.backgroundColor='white'; this.style.color='black';" onmouseout="this.style.backgroundColor='black'; this.style.color='white';">新增飲料相片
+                    <input id="r_img" class="inputFile" type="file" name="r_img" onchange="showon(this.files)">
+                    </div>
+                    <br>
+                </div>                
+                <div class="inputdiv">
+                    <label>飲料</label>
+                    <input id="DrinkRate" type="range" name = "DrinkRate" class="slider" min="0" max="5" >
                 </div>
-                <div class="inputdiv"><h6>DrinkName</h6>
-                    <input id="DrinkName" type="text" name="DrinkName" autocomplete="off">
+                <div class="inputdiv">
+                    <label>配料</label>
+                    <input id="IngredRate" type="range" name = "IngredRate" class="slider" min="0" max="5" >
                 </div>
-                <div class="inputdiv"><h6>DrinkText</h6>
+                <div class="inputdiv">
+                    <label>甜度</label>
+                    <input id="SweetRate" type="range" name = "SweetRate" class="slider" min="0" max="5" >
+                </div>
+                <div class="inputdiv">
+                    <label>價格</label>
+                    <input id="PriceRate" type="range" name = "PriceRate" class="slider" min="0" max="5" >
+                </div>
+                <div class="inputdiv"><h6>對這杯手搖飲我想說...</h6>
                     <input id="DrinkText" type="text" name="DrinkText" autocomplete="off">
-                </div>
-                
-                <div >
-                    <label>DrinkRate</label>
-                    <input id="DrinkRate" type="range" name = "DrinkRate" class="custom-range" min="0" max="5" >
-                </div>
-                <div>
-                    <label>IngredRate</label>
-                    <input id="IngredRate" type="range" name = "IngredRate" class="custom-range" min="0" max="5" >
-                </div>
-                <div>
-                    <label>SweetRate</label>
-                    <input id="SweetRate" type="range" name = "SweetRate" class="custom-range" min="0" max="5" >
-                </div>
-                <div>
-                    <label>PriceRate</label>
-                    <input id="PriceRate" type="range" name = "PriceRate" class="custom-range" min="0" max="5" >
                 </div>
                 <div class="inputdiv">
                     <input id="submitbtn" type="button" name="submitbtn"  value="Submit" onmouseover="this.style.backgroundColor='white'; this.style.color='black';" onmouseout="this.style.backgroundColor='black'; this.style.color='white';" onclick = "Drinksubmit();">
@@ -75,13 +75,13 @@
 
 
 <script>
-function show(f) {
+    function showon(f) {
         var str = "";
         for (var i = 0; i < f.length; i++) {
             var reader = new FileReader();
             reader.readAsDataURL(f[i]);
             reader.onload = function (e) {
-                str += "<img  height='60' width='60' style=\"border-radius:50%; object-position: center; \" id='img' src='" + e.target.result + "'/>";
+                str = "<img style=\"object-position: center; height: 100px; width: auto; \" id='img' src='" + e.target.result + "'/>";
                 $("#img")[0].outerHTML = str;
             }
         }        

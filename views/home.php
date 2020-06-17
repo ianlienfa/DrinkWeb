@@ -27,6 +27,7 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="css/checkboxstyle.css">
         <!--標籤名字-->
         <title>珍吸生命，人人有擇</title>
         <script>
@@ -50,7 +51,13 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
             document.cookie="BrandID="+$id;
         }
 
-        </script>
+        function sendToggle2()
+    {
+        document.getElementById("formcheckbox").submit();
+
+    }
+
+    </script>
         
     </head>
     <body>   
@@ -60,8 +67,8 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
                 <div class='container'>
                     <div class="col-md-12">
                         <h1 style="text-align: start;">「珍吸生命，人人有擇」</h1>
-                        <p class='lead'>全台唯一，手搖專屬評論網站</p>
-                        <a class='btn' href="#">現在就留下第一則評論</a>
+                        <p class='lead' style="margin-top: 20px;">全台唯一，手搖專屬評論網站</p>
+                        <a class='btn' href="comment.php" style="margin-top: 20px;">現在就留下第一則評論</a>
                     </div>
                 </div>
             </div>
@@ -87,5 +94,33 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
             ?>
             </div>
         </section>
-    </body>
+        <div id='info' name='info' style="padding-top: 60px;">
+        <div class='container'>
+            <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h3>留言一覽</h3>
+                    </div>
+            </div>
+            <form method="get" action='./home.php' id="formcheckbox" enctype="multipart/form-data">
+                <div class="onoffswitch2">
+                        <input type="checkbox" name="myonoffswitch2" class="onoffswitch2-checkbox" id="myonoffswitch2" tabindex="0" onchange="sendToggle2()" <?php
+                        if (isset($_GET["myonoffswitch2"])&&$_GET["myonoffswitch2"]==="on"){
+                            echo "checked";
+                        }?>
+                        ><label class="onoffswitch2-label" for="myonoffswitch2">
+                            <span class="onoffswitch2-inner"></span>
+                            <span class="onoffswitch2-switch"></span>
+                        </label>
+                </div>
+            </form> 
+                <?php
+                        if (isset($_GET['myonoffswitch2'])&& $_GET['myonoffswitch2'] === "on") {
+                            getAllComment($conn);
+                        }else{
+                            getAllDrinkComment($conn);
+                        }
+                ?> 
+        </div>    
+</div>
+</body>
 </html>
