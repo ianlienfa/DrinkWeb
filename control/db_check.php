@@ -238,7 +238,7 @@ function getBrandInfo($conn, $brandid){
 
 function getBrandComment($conn, $BrandID)
 {
-    $query = "Select U.Username, StoreText, Storename, C.EnvironRate, C.ServiceRate, CommentDate, U.Img, U.Mime from StoreComment C, STORE S, USER U where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and C.BrandID = ".$BrandID;
+    $query = "Select U.Username, StoreText, Storename, C.EnvironRate, C.ServiceRate, CommentDate, U.Img, U.Mime,U.UserID, C.comment from StoreComment C, STORE S, USER U where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and C.BrandID = ".$BrandID;
     // count the numbers of the return rows and decide the pattern
     $result = $conn->query($query);
     if ($result === false){
@@ -254,9 +254,11 @@ function getBrandComment($conn, $BrandID)
             echo '<img id="profile" style="margin-top: 20px;" src="picture/profile.png"/>';            
         }
         echo '<p><b>'.$row[0].'</b></p>
-        <p>'.$row[5].'</p>
-        </div>';
-        echo '<div class="commentcontent col-md-5"><div class="location">
+        <p>'.$row[5].'</p>';
+        if (isset($_COOKIE['login'])&&$row[8]==$_COOKIE['login']){
+            echo '<button id="trash" onclick="delstorecomm('.$row[9].');"></button>';
+        }
+        echo '</div><div class="commentcontent col-md-5"><div class="location">
                 <img src="picture/pin.png" style="margin-top: 15px;"/>
                 <span style="margin-left: 5px;">'.$row[2].'</span>
             </div>';
@@ -314,7 +316,7 @@ function calculateRate($conn,$flag,$brandid,$storeid){
 }
 
 function getDrinkComment($conn,$BrandID){
-    $query="SELECT U.Username,U.Img, U.Mime, DrinkName, DrinkText, C.DrinkRate, C.IngredRate, C.SweetRate, C.PriceRate, DrinkImg, DrinkImgMime, Storename,CommentDate from DrinkComment C, STORE S, USER U where C.BrandID=S.BrandID and C.StoreID=S.ID and C.USERID=U.USERID and C.BrandID=".$BrandID;
+    $query="SELECT U.Username,U.Img, U.Mime, DrinkName, DrinkText, C.DrinkRate, C.IngredRate, C.SweetRate, C.PriceRate, DrinkImg, DrinkImgMime, Storename,CommentDate,U.UserID,C.CommentID from DrinkComment C, STORE S, USER U where C.BrandID=S.BrandID and C.StoreID=S.ID and C.USERID=U.USERID and C.BrandID=".$BrandID;
     $result = $conn->query($query);
     if ($result === false){
         echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
@@ -329,8 +331,11 @@ function getDrinkComment($conn,$BrandID){
             echo '<img id="profile" style="margin-top: 60px;" src="picture/profile.png"/>';            
         }
         echo '<p><b>'.$row[0].'</b></p>
-        <p>'.$row[12].'</p>
-        </div><div class="commentcontent col-md-5"><div class="row"><div class="col-md-7">';
+        <p>'.$row[12].'</p>';
+        if (isset($_COOKIE['login'])&&$row[13]==$_COOKIE['login']){
+            echo '<button id="trash" onclick="delcomm('.$row[14].');"></button>';
+        }
+        echo '</div><div class="commentcontent col-md-5"><div class="row"><div class="col-md-7">';
         echo '<div class="location">
                 <img src="picture/pin.png" style="margin-top: 15px;"/>
                 <span style="margin-left: 5px;">'.$row[11].'</span>
@@ -375,7 +380,7 @@ function getStorelist($conn,$brandid){
 }
 
 function getStoreComment($conn,$brandid, $storeid){
-    $query = "Select U.Username, StoreText, Storename, C.EnvironRate, C.ServiceRate, CommentDate, U.Img, U.Mime from StoreComment C, STORE S, USER U where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and C.BrandID = ".$brandid.' and C.StoreID='.$storeid;
+    $query = "Select U.Username, StoreText, Storename, C.EnvironRate, C.ServiceRate, CommentDate, U.Img, U.Mime,U.UserID, C.comment from StoreComment C, STORE S, USER U where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and C.BrandID = ".$brandid.' and C.StoreID='.$storeid;
     // count the numbers of the return rows and decide the pattern
     $result = $conn->query($query);
     if ($result === false){
@@ -391,9 +396,11 @@ function getStoreComment($conn,$brandid, $storeid){
             echo '<img id="profile" style="margin-top: 20px;" src="picture/profile.png"/>';            
         }
         echo '<p><b>'.$row[0].'</b></p>
-        <p>'.$row[5].'</p>
-        </div>';
-        echo '<div class="commentcontent col-md-5"><div class="location">
+        <p>'.$row[5].'</p>';
+        if (isset($_COOKIE['login'])&&$row[8]==$_COOKIE['login']){
+            echo '<button id="trash" onclick="delstorecomm('.$row[9].');"></button>';
+        }
+        echo '</div><div class="commentcontent col-md-5"><div class="location">
                 <img src="picture/pin.png" style="margin-top: 15px;"/>
                 <span style="margin-left: 5px;">'.$row[2].'</span>
             </div>';
@@ -408,7 +415,7 @@ function getStoreComment($conn,$brandid, $storeid){
 }
 
 function getStoreDrinkComment($conn, $brandid, $storeid){
-    $query="SELECT U.Username,U.Img, U.Mime, DrinkName, DrinkText, C.DrinkRate, C.IngredRate, C.SweetRate, C.PriceRate, DrinkImg, DrinkImgMime, Storename,CommentDate from DrinkComment C, STORE S, USER U where C.BrandID=S.BrandID and C.StoreID=S.ID and C.USERID=U.USERID and C.BrandID=".$brandid.' and C.StoreID='.$storeid;
+    $query="SELECT U.Username,U.Img, U.Mime, DrinkName, DrinkText, C.DrinkRate, C.IngredRate, C.SweetRate, C.PriceRate, DrinkImg, DrinkImgMime, Storename,CommentDate,U.UserID, C.CommentID from DrinkComment C, STORE S, USER U where C.BrandID=S.BrandID and C.StoreID=S.ID and C.USERID=U.USERID and C.BrandID=".$brandid.' and C.StoreID='.$storeid;
     $result = $conn->query($query);
     if ($result === false){
         echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
@@ -423,8 +430,11 @@ function getStoreDrinkComment($conn, $brandid, $storeid){
             echo '<img id="profile" style="margin-top: 60px;" src="picture/profile.png"/>';            
         }
         echo '<p><b>'.$row[0].'</b></p>
-        <p>'.$row[12].'</p>
-        </div><div class="commentcontent col-md-5"><div class="row"><div class="col-md-7">';
+        <p>'.$row[12].'</p>';
+        if (isset($_COOKIE['login'])&&$row[13]==$_COOKIE['login']){
+            echo '<button id="trash" onclick="delcomm('.$row[14].');"></button>';
+        }
+        echo '</div><div class="commentcontent col-md-5"><div class="row"><div class="col-md-7">';
         echo '<div class="location">
                 <img src="picture/pin.png" style="margin-top: 15px;"/>
                 <span style="margin-left: 5px;">'.$row[11].'</span>
@@ -485,7 +495,9 @@ function getStoreInfo($conn, $brandid, $storeid){
     echo '<div class="right col-md-6">';
     if ($row=$result->fetch_row()){
         for ($i=0;$i<4;$i++){
-            $rate[$i]=$row[$i];
+            if ($row[$i]!=null){
+                $rate[$i]=round($row[$i],1);
+            }
             $ratebar[$i]=$rate[$i]*20;
             echo '<style>@keyframes '.$rateengname[$i].' {
                 0% {width:0%; }
@@ -505,7 +517,9 @@ function getStoreInfo($conn, $brandid, $storeid){
     }
     if ($row=$result->fetch_row()){
         for ($i=4;$i<6;$i++){
-            $rate[$i]=$row[$i-4];
+            if ($row[$i-4]!=null){
+                $rate[$i]=round($row[$i-4],1);
+            }
             $ratebar[$i]=$rate[$i]*20;
             echo '<style>@keyframes '.$rateengname[$i].' {
                 0% {width:0%; }
@@ -563,9 +577,10 @@ function getBrandSelection($conn)
             echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
         }
     }else{
+
         while($row = $result->fetch_row())
         {
-            if ($row[0]!==$_COOKIE['BrandIdforDB']){
+            if ($row[0]!==$_GET['BrandName']){
                 echo '<option value = "'.$row[0].'">'.$row[1].'</option>';
             }else{
                 echo '<option selected="selected" value = "'.$row[0].'">'.$row[1].'</option>';               
@@ -680,7 +695,7 @@ function getCommentMax($conn)
 }
 
 function getAllComment($conn){
-    $query = "Select U.Username, StoreText, Storename, C.EnvironRate, C.ServiceRate, CommentDate, U.Img, U.Mime,B.Brandname from StoreComment C, STORE S, USER U,BRAND B where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and B.BrandID=C.BrandID";
+    $query = "Select U.Username, StoreText, Storename, C.EnvironRate, C.ServiceRate, CommentDate, U.Img, U.Mime,B.Brandname,C.comment, U.UserID from StoreComment C, STORE S, USER U,BRAND B where C.BrandID = S.BrandID and C.StoreID = S.ID and C.USERID = U.USERID and B.BrandID=C.BrandID";
     // count the numbers of the return rows and decide the pattern
     $result = $conn->query($query);
     if ($result === false){
@@ -696,9 +711,11 @@ function getAllComment($conn){
             echo '<img id="profile" style="margin-top: 30px;" src="picture/profile.png"/>';            
         }
         echo '<p><b>'.$row[0].'</b></p>
-        <p style="margin-top: -15px;">'.$row[5].'</p>
-        </div>';
-        echo '<div class="commentcontent col-md-5"><span style="font-size: 30px;"><b>'.$row[8].'</b></span><div class="location" style="margin-bottom: 10px;">
+        <p style="margin-top: -15px;">'.$row[5].'</p>';
+        if (isset($_COOKIE['login'])&&$row[10]==$_COOKIE['login']){
+            echo '<button id="trash" onclick="delstorecomm('.$row[9].');"></button>';
+        }
+        echo '</div><div class="commentcontent col-md-5"><span style="font-size: 30px;"><b>'.$row[8].'</b></span><div class="location" style="margin-bottom: 10px;">
                 <img src="picture/pin.png"/>
                 <span style="margin-left: 5px;">'.$row[2].'</span>
             </div>';
@@ -713,7 +730,7 @@ function getAllComment($conn){
 }
 
 function getAllDrinkComment($conn){
-    $query="SELECT U.Username,U.Img, U.Mime, DrinkName, DrinkText, C.DrinkRate, C.IngredRate, C.SweetRate, C.PriceRate, DrinkImg, DrinkImgMime, Storename,CommentDate, B.Brandname from DrinkComment C, STORE S, USER U, BRAND B where C.BrandID=S.BrandID and C.StoreID=S.ID and C.USERID=U.USERID and B.BrandID=C.BrandID";
+    $query="SELECT U.Username,U.Img, U.Mime, DrinkName, DrinkText, C.DrinkRate, C.IngredRate, C.SweetRate, C.PriceRate, DrinkImg, DrinkImgMime, Storename,CommentDate, B.Brandname,U.UserID,C.CommentID from DrinkComment C, STORE S, USER U, BRAND B where C.BrandID=S.BrandID and C.StoreID=S.ID and C.USERID=U.USERID and B.BrandID=C.BrandID";
     $result = $conn->query($query);
     if ($result === false){
         echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
@@ -728,8 +745,11 @@ function getAllDrinkComment($conn){
             echo '<img id="profile" style="margin-top: 80px;" src="picture/profile.png"/>';            
         }
         echo '<p><b>'.$row[0].'</b></p>
-        <p style="margin-top: -15px;">'.$row[12].'</p>
-        </div><div class="commentcontent col-md-5"><div class="row"><div class="col-md-7"><span style="font-size: 30px;"><b>'.$row[13].'</b></span>';
+        <p style="margin-top: -15px;">'.$row[12].'</p>';
+        if (isset($_COOKIE['login'])&&$row[14]==$_COOKIE['login']){
+            echo '<button id="trash" onclick="delcomm('.$row[15].');"></button>';
+        }
+        echo '</div><div class="commentcontent col-md-5"><div class="row"><div class="col-md-7"><span style="font-size: 30px;"><b>'.$row[13].'</b></span>';
         echo '<div class="location" style="margin-top: 5px;">
                 <img src="picture/pin.png" />
                 <span style="margin-left: 5px;">'.$row[11].'</span>
@@ -740,9 +760,9 @@ function getAllDrinkComment($conn){
             printRate($row[7],"甜度");
             printRate($row[8],"價格");
         echo '<p id="storetext" style="margin-top: 10px;">'.$row[4].'</p>
-        </div><div class="col-md-5 align-self-center">';
+        </div><div class="col-md-3 align-self-center">';
         if ($row[9]!=null&&$row[10]!=null){
-            echo '<img src="data:'.$row[10].';base64,'.base64_encode($row[9]).'"style="height: 150px; width: fit-content; object-fit: contain; background-color: transparent;"/></div></div></div></div>';
+            echo '<img src="data:'.$row[10].';base64,'.base64_encode($row[9]).'"style="height: 130px; width: fit-content; object-fit: contain; background-color: transparent;"/></div></div></div></div>';
         }else{
             echo '<img src="picture/bubble-tea.png" style="height: 130px; width: 130px; object-fit: cover;"/></div></div></div></div>';
         }
@@ -751,6 +771,44 @@ function getAllDrinkComment($conn){
 
 }
 
-
+function deletecomm($conn,$id,$flag,$page){
+    if ($flag==1){
+        $query='DELETE FROM DrinkComment WHERE CommentID='.$id;
+    }else{
+        $query='DELETE FROM StoreComment WHERE comment='.$id;        
+    }
+    if ($conn->query($query)){
+        if ($page===1){
+            echo "<script>Swal.fire({
+                icon: 'success',
+                title: '刪除成功',
+                showConfirmButton: false,
+                timer: 1500
+            }).then((result)=>{
+                document.location.href ='/DrinkWeb/views/home.php'
+            })</script>";
+        }
+        if ($page==2){
+            echo "<script>Swal.fire({
+                icon: 'success',
+                title: '刪除成功',
+                showConfirmButton: false,
+                timer: 1500
+            }).then((result)=>{
+                document.location.href ='/DrinkWeb/views/brand.php'
+            })</script>";            
+        }
+        if ($page==3){
+            echo "<script>Swal.fire({
+                icon: 'success',
+                title: '刪除成功',
+                showConfirmButton: false,
+                timer: 1500
+            }).then((result)=>{
+                document.location.href ='/DrinkWeb/views/branch.php'
+            })</script>";            
+        }
+    }  
+}
 
 ?>

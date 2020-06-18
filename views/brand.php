@@ -1,8 +1,19 @@
 <?php
+ob_start();
 require_once "/opt/lampp/htdocs/DrinkWeb/include/include.php"; 
 require_once dirname(__FILE__)."/store_nav.php";
 require_once dirname(__FILE__)."/gotop.php";
 require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
+$db = new DBController();
+$conn = $db->connectDB();
+
+if (isset($_GET['action'])){
+    deletecomm($conn, $_COOKIE['CommentID'],1,2);
+}
+
+if (isset($_GET['action2'])){
+    deletecomm($conn, $_COOKIE['CommentID'],2,2);
+}
 ?>
 
 <!doctype html>
@@ -15,6 +26,7 @@ require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/brand.css">
+    <link rel="stylesheet" href="css/trashstyle.css">
     <title>珍吸生命，人人有擇</title>
     <script src="https://kit.fontawesome.com/e40da61bd8.js" crossorigin="anonymous"></script>
 
@@ -53,6 +65,40 @@ require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
         document.getElementById("formcheckbox").submit();
 
     }
+
+    function delcomm($id){
+            document.cookie="CommentID="+$id;
+            Swal.fire({
+                title: '確定刪除這則留言？',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.value) {
+                    document.location.href ="/DrinkWeb/views/brand.php?action=ok";
+                    window.location = '../views/brand.php?action=ok';
+                }  
+            })   
+        }
+
+        function delstorecomm($id){
+            document.cookie="CommentID="+$id;
+            Swal.fire({
+                title: '確定刪除這則留言？',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.value) {
+                    document.location.href ="/DrinkWeb/views/brand.php?action2=ok";
+                    window.location = '../views/brand.php?action2=ok';
+                }  
+            })   
+        }
 
 </script>
 
@@ -113,3 +159,7 @@ require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
     unset($db);
 ?>
 </html>
+
+<?php 
+ob_end_flush();
+?>

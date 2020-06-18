@@ -1,14 +1,14 @@
 <?php
+    ob_start();
     require_once "/opt/lampp/htdocs/DrinkWeb/include/include.php";
     require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
     require_once dirname(__FILE__)."/store_nav.php";
     $db = new DBController();
     $conn = $db->connectDB();
 
-    $BrandID = $_GET["BrandID"];
-    $StoreID = $_GET["StoreID"];
-    $UserID = $_GET["UserID"];
-    $CommentID = $_GET["CommentID"]; 
+    //$CommentID = $_GET["CommentID"]; 
+
+    date_default_timezone_set("Asia/Taipei");
 
     // $commentID = getCommentMax($conn);
     // $commentID = $commentID + 1;
@@ -18,6 +18,38 @@
     // if ($result === false){
     //     echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
     // }
+    if (isset($_POST['submitbtn'])){
+        if (isset($_POST['DrinkName'])&&isset($_POST['DrinkRate'])&&isset($_POST['IngredRate'])&&isset($_POST['SweetRate'])&&isset($_POST['PriceRate'])&&isset($_POST['DrinkText'])){
+            $imgData=null;
+            $imageProperties=null;
+            if (count($_FILES)){
+                if (is_uploaded_file($_FILES['r_img']['tmp_name'])) {
+                    $imgData = addslashes(file_get_contents($_FILES['r_img']['tmp_name']));
+                    $imageProperties = getimageSize($_FILES['r_img']['tmp_name']);
+                }
+            }
+            $BrandID=$_COOKIE['DrinkBrandID'];
+            $StoreID=$_COOKIE['DrinkStoreID'];
+            $UserID=$_COOKIE['DrinkUserID'];
+            $date=date("Y-m-d");
+            $query = "INSERT INTO DrinkComment(brandID, StoreID, UserID, DrinkName, DrinkText, DrinkRate, IngredRate, SweetRate, PriceRate,CommentDate,DrinkImg, DrinkImgMime) VALUES
+            ($BrandID,$StoreID,$UserID,'$_POST[DrinkName]','$_POST[DrinkText]',$_POST[DrinkRate],$_POST[IngredRate],$_POST[SweetRate],$_POST[PriceRate],'$date','$imgData','$imageProperties[mime]')";    
+            // echo $query;
+            $result = $conn->query($query);
+            if ($result === false){
+                echo "<p>" . "DBerror :" . mysqli_error($conn) . "</p>";
+            }else{
+                echo "<script> Swal.fire({
+                    icon: 'success',
+                    title: '留言成功',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then((result) => {
+                        window.location = '../views/home.php'}) 
+                </script>";
+            }
+        }
+    }
 
 
 ?>
@@ -32,7 +64,7 @@
     <div class="row align-items-center" style="height: 100%; margin-top: 10px;">
         <div class="col text-center">
             <h2 style="margin-top: 20px;"><b>對手搖飲評價吧！</b></h2>
-            <form id = "DrinkFrom" action="submitDrinkComment.php" style="text-align:center; margin-top: 10px;" enctype="multipart/form-data">
+            <form id = "DrinkFrom" method="post" action="DrinkComment.php" style="text-align:center; margin-top: 10px;" enctype="multipart/form-data">
                 <div class="inputdiv"><h6>手搖飲品項</h6>
                     <input id="DrinkName" style="width: 200px; text-align: center;" type="text" name="DrinkName" autocomplete="off">
                 </div>
@@ -66,7 +98,7 @@
                     <input id="DrinkText" type="text" name="DrinkText" autocomplete="off">
                 </div>
                 <div class="inputdiv">
-                    <input id="submitbtn" type="button" name="submitbtn"  value="Submit" onmouseover="this.style.backgroundColor='white'; this.style.color='black';" onmouseout="this.style.backgroundColor='black'; this.style.color='white';" onclick = "Drinksubmit();">
+                    <input id="submitbtn" type="submit" name="submitbtn"  value="Submit" onmouseover="this.style.backgroundColor='white'; this.style.color='black';" onmouseout="this.style.backgroundColor='black'; this.style.color='white';">
                 </div>
             </form>
         </div>
@@ -86,23 +118,19 @@
             }
         }        
     }
-function Drinksubmit()
+/*function Drinksubmit()
 {
     let StoreID= <?php echo $StoreID; ?>;
     let BrandID = <?php echo $BrandID; ?>;
     let UserID = <?php echo $UserID; ?>;
-    let CommentID = <?php echo $CommentID; ?>;
-    let DrinkName = document.getElementById('DrinkName').value;
-    let DrinkText = document.getElementById('DrinkText').value;
-    let IngredRate = document.getElementById('IngredRate').value;
-    let SweetRate = document.getElementById('SweetRate').value;
-    let PriceRate = document.getElementById('PriceRate').value;
-    let DrinkRate = document.getElementById('DrinkRate').value;
 
-    let url = "/DrinkWeb/views/submitDrinkComment.php?" + "BrandID=" +BrandID+ "&StoreID=" + StoreID + "&UserID=" + UserID + "&CommentID=" + CommentID
-    + "&DrinkName=" + DrinkName + "&DrinkText=" + DrinkText + "&IngredRate=" + IngredRate + "&SweetRate=" + SweetRate + "&PriceRate=" + PriceRate + "&DrinkRate=" + DrinkRate;
+    let url = "/DrinkWeb/views/submitDrinkComment.php?" + "BrandID=" +BrandID+ "&StoreID=" + StoreID + "&UserID=" + UserID;
     
     console.log(url);
     document.location.href = url;
-}
+}*/
 </script>
+
+<?php 
+ob_end_flush();
+?>

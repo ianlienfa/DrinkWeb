@@ -1,0 +1,14 @@
+#trash {
+    height: 20px;
+    width: 20px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url("trash.png");
+}
+
+#trash:hover {
+    background-image: url("trash2.png");
+}

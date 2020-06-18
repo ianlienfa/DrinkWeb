@@ -1,6 +1,7 @@
 <?php
     require_once "/opt/lampp/htdocs/DrinkWeb/include/include.php";
     require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
+    date_default_timezone_set("Asia/Taipei");
     $db = new DBController();
     $conn = $db->connectDB();
 
@@ -13,6 +14,10 @@
     {
         $UserID = $_COOKIE["login"];
     }
+
+    setcookie("DrinkBrandID",$BrandID);
+    setcookie("DrinkStoreID",$StoreID);
+    setcookie("DrinkUserID",$UserID);
 
     $commentID = getCommentMax($conn);
     $commentID = $commentID + 1;

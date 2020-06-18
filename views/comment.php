@@ -3,6 +3,7 @@ ob_start();
 require_once "/opt/lampp/htdocs/DrinkWeb/include/include.php";
 require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
 require_once dirname(__FILE__)."/store_nav.php";
+date_default_timezone_set("Asia/Taipei");
 //require_once dirname(__FILE__)."/js/commentjs.php";
 
  if(!isset($_COOKIE["login"])&&$_COOKIE["login"]==null)
@@ -17,7 +18,9 @@ require_once dirname(__FILE__)."/store_nav.php";
       }).then((result) => {
         if (result.value) {
             window.location = '../views/login.php'
-        }
+        }else{
+            history.go(-1)
+        }    
       })</script>";
  }
 $db = new DBController();

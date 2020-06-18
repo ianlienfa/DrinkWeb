@@ -49,13 +49,13 @@ header li {
 }
 
 .left {
-    margin: 60px auto;
+    margin: 0px auto;
 }
 
 .right {
     list-style: none;
     width: 500px;
-    margin: 60px auto;
+    margin: 0px auto;
     height: 50px;
 }
 

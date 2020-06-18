@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once "/opt/lampp/htdocs/DrinkWeb/control/db_check.php";
 require_once "/opt/lampp/htdocs/DrinkWeb/include/include.php";
 require_once dirname(__FILE__)."/gotop.php";
@@ -20,6 +21,15 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
         </script>";
     }
 }
+
+if (isset($_GET['action'])){
+    deletecomm($conn, $_COOKIE['CommentID'],1,1);
+}
+
+if (isset($_GET['action2'])){
+    deletecomm($conn, $_COOKIE['CommentID'],2,1);
+}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -28,6 +38,7 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/checkboxstyle.css">
+        <link rel="stylesheet" href="css/trashstyle.css">
         <!--標籤名字-->
         <title>珍吸生命，人人有擇</title>
         <script>
@@ -52,10 +63,44 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
         }
 
         function sendToggle2()
-    {
-        document.getElementById("formcheckbox").submit();
+        {
+            document.getElementById("formcheckbox").submit();
 
-    }
+        }
+
+        function delcomm($id){
+            document.cookie="CommentID="+$id;
+            Swal.fire({
+                title: '確定刪除這則留言？',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.value) {
+                    document.location.href ="/DrinkWeb/views/home.php?action=ok";
+                    window.location = '../views/home.php?action=ok';
+                }  
+            })   
+        }
+
+        function delstorecomm($id){
+            document.cookie="CommentID="+$id;
+            Swal.fire({
+                title: '確定刪除這則留言？',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.value) {
+                    document.location.href ="/DrinkWeb/views/home.php?action2=ok";
+                    window.location = '../views/home.php?action2=ok';
+                }  
+            })   
+        }
 
     </script>
         
@@ -124,3 +169,6 @@ if (isset($_POST['search'])&&isset($_POST['search_btn'])){
 </div>
 </body>
 </html>
+<?php 
+ob_end_flush();
+?>
